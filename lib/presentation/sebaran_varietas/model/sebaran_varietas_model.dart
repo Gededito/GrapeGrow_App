@@ -1,13 +1,18 @@
 class SebaranVarietasModel {
   String namaVarietas;
-  String owner;
+  String namaPemilik;
+  String alamat;
   String imageVarietas;
-  int jarak;
+  String descVarietas;
+  int luasLahan;
+
 
   SebaranVarietasModel({
     required this.namaVarietas,
-    required this.owner,
+    required this.namaPemilik,
+    required this.alamat,
     required this.imageVarietas,
-    required this.jarak,
+    required this.descVarietas,
+    required this.luasLahan,
   });
 }

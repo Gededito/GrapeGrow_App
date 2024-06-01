@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/model/sebaran_hama_model.dart';
 
-class ListItemCard extends StatelessWidget {
-  final String fontPoppins = 'FontPoppins';
+class CardSebaranHama extends StatefulWidget {
+  final SebaranHamaModel data;
+  final Function() onTap;
 
-  final VoidCallback onTap;
-  final String name;
-  final String desc;
-  final String imagePath;
-
-  const ListItemCard({
+  const CardSebaranHama({
     super.key,
     required this.onTap,
-    required this.name,
-    required this.desc,
-    required this.imagePath,
+    required this.data,
   });
+
+  @override
+  State<CardSebaranHama> createState() => _CardSebaranHamaState();
+}
+
+class _CardSebaranHamaState extends State<CardSebaranHama> {
+  final String fontPoppins = 'FontPoppins';
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12.0),
@@ -36,45 +38,58 @@ class ListItemCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12.0),
+                ),
                 child: Image.asset(
-                  imagePath,
+                  widget.data.imageHama,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(width: 12.0),
-              Flexible(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      name,
+                      widget.data.namaOpt,
                       style: TextStyle(
                         fontFamily: fontPoppins,
                         fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis
+                      ),
+                      maxLines: 1,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      widget.data.namaPemilik,
+                      style: TextStyle(
+                        fontFamily: fontPoppins,
                         fontWeight: FontWeight.w500,
                         overflow: TextOverflow.ellipsis,
                       ),
                       maxLines: 1,
                     ),
-                    const SizedBox(height: 4.0),
+                    const SizedBox(
+                      height: 4,
+                    ),
                     Text(
-                      desc,
+                      widget.data.alamat,
                       style: TextStyle(
                         fontFamily: fontPoppins,
-                        fontSize: 12,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 3,
                     ),
                   ],
                 ),

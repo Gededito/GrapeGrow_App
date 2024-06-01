@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/presentation/auth/login_page.dart';
+import 'package:grapegrow_apps/presentation/forum/pages/forum_page.dart';
 import 'package:grapegrow_apps/presentation/home/home_page.dart';
 import 'package:grapegrow_apps/presentation/profile/profile_page.dart';
 
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const DashboardPage(),
+      home: const LoginPage(),
     );
   }
 }
@@ -37,9 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<Widget> _page = [
     const HomePage(),
-    const Center(
-      child: Text('Forum Diskusi'),
-    ),
+    const ForumPage(),
     const ProfilePage(),
   ];
 

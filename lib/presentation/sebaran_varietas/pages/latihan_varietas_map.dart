@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 
-class VarietasMap extends StatefulWidget {
-  const VarietasMap({super.key});
+class LatihanVarietasMap extends StatefulWidget {
+  const LatihanVarietasMap({super.key});
 
   @override
-  State<VarietasMap> createState() => _VarietasMapState();
+  State<LatihanVarietasMap> createState() => _LatihanVarietasMapState();
 }
 
-class _VarietasMapState extends State<VarietasMap> {
+class _LatihanVarietasMapState extends State<LatihanVarietasMap> {
   final String fontPoppins = 'FontPoppins';
 
   // Latihan Menampilkan Peta Dengan Google Maps

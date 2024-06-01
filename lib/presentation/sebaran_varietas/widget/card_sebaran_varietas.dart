@@ -1,94 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:grapegrow_apps/core/component/button_circle.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/model/sebaran_varietas_model.dart';
 
-class SebaranCard extends StatelessWidget {
-  final String fontPoppins = 'FontPoppins';
-
+class CardSebaranVarietas extends StatefulWidget {
   final Function() onTap;
-  final String name;
-  final String owner;
-  final int jarak;
-  final String imagePath;
+  final SebaranVarietasModel data;
 
-  const SebaranCard({
+  const CardSebaranVarietas({
     super.key,
+    required this.data,
     required this.onTap,
-    required this.name,
-    required this.owner,
-    required this.jarak,
-    required this.imagePath,
   });
+
+  @override
+  State<CardSebaranVarietas> createState() => _CardSebaranVarietasState();
+}
+
+class _CardSebaranVarietasState extends State<CardSebaranVarietas> {
+  final String fontPoppins = 'FontPoppins';
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: AppColors.black,
-              width: 1.0
+        padding: const EdgeInsets.all(4.0),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(12.0),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.black.withOpacity(0.14),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
+              spreadRadius: 2,
             ),
-          ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12.0),
+                ),
                 child: Image.asset(
-                  imagePath,
+                  widget.data.imageVarietas,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(width: 12.0),
-              Flexible(
+              const SizedBox(width: 16.0),
+              Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      widget.data.namaVarietas,
                       style: TextStyle(
                         fontFamily: fontPoppins,
                         fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      maxLines: 1,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      widget.data.namaPemilik,
+                      style: TextStyle(
+                        fontFamily: fontPoppins,
                         fontWeight: FontWeight.w500,
                         overflow: TextOverflow.ellipsis,
                       ),
                       maxLines: 1,
                     ),
-                    const SizedBox(height: 4.0),
-                    Text(
-                      owner,
-                      style: TextStyle(
-                        fontFamily: fontPoppins,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      maxLines: 1,
+                    const SizedBox(
+                      height: 8,
                     ),
-                    const SizedBox(height: 4.0),
                     Text(
-                      'Sekitar $jarak m dari lokasimu',
+                      widget.data.alamat,
                       style: TextStyle(
                         fontFamily: fontPoppins,
-                        fontSize: 12,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
                     ),
                   ],
                 ),
               ),
-              CircleButton(onPressed: onTap),
             ],
           ),
         ),

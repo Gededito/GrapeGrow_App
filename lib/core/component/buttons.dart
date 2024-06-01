@@ -83,7 +83,7 @@ class Button extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             backgroundColor: color,
             side: const BorderSide(
-              color: AppColors.primary,
+              color: AppColors.secondary,
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius),

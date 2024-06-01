@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/presentation/varietas/model/varietas_model.dart';
+import 'package:grapegrow_apps/presentation/varietas/pages/detail_varietas_page.dart';
+import 'package:grapegrow_apps/widgets/list_item_card.dart';
 
 class VarietasPage extends StatefulWidget {
   const VarietasPage({super.key});
@@ -78,6 +80,31 @@ class _VarietasPageState extends State<VarietasPage> {
         iconTheme: const IconThemeData(
           color: AppColors.white,
         ),
+      ),
+      body: ListView.builder(
+        itemCount: varietas.length,
+        shrinkWrap: true,
+        itemBuilder: (context, int index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 4.0,
+              horizontal: 8.0,
+            ),
+            child: ListItemCard(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailVarietasPage(data: varietas[index]),
+                  ),
+                );
+              },
+              name: varietas[index].namaVarietas,
+              desc: varietas[index].descVarietas,
+              imagePath: varietas[index].imageVarietas,
+            ),
+          );
+        },
       ),
     );
   }

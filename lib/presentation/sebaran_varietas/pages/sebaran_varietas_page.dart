@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/model/sebaran_varietas_model.dart';
-import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/varietas_map.dart';
-import 'package:grapegrow_apps/widgets/sebaran_card.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/detail_sebaran_varietas.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/map_varietas.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/widget/card_sebaran_varietas.dart';
 
 class SebaranVarietasPage extends StatefulWidget {
   const SebaranVarietasPage({super.key});
@@ -17,52 +18,60 @@ class _SebaranVarietasPageState extends State<SebaranVarietasPage> {
 
   final List<SebaranVarietasModel> sebaranVarietas = [
     SebaranVarietasModel(
-      namaVarietas: 'Varietas Anggur 1',
-      owner: 'Pemilik Lahan 1',
+      namaVarietas: 'Anggur Julian',
+      namaPemilik: 'Albert Anthonius',
+      alamat: 'Balaraja, Kabupaten Tangerang',
       imageVarietas: 'assets/images/testing_1.jpg',
-      jarak: 90
+      luasLahan: 200,
+      descVarietas: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ),
     SebaranVarietasModel(
-      namaVarietas: 'Varietas Anggur 2',
-      owner: 'Pemilik Lahan 2',
+      namaVarietas: 'Anggur Ninel',
+      namaPemilik: 'Anggur Christhoper',
+      alamat: 'Bintaro, Tangerang Selatan',
       imageVarietas: 'assets/images/testing_2.jpg',
-      jarak: 80,
+      luasLahan: 200,
+      descVarietas: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ),
     SebaranVarietasModel(
-      namaVarietas: 'Varietas Anggur 3',
-      owner: 'Pemilik Lahan 3',
-      imageVarietas: "assets/images/testing_3.jpg",
-      jarak: 70,
-    ),
-    SebaranVarietasModel(
-      namaVarietas: 'Varietas Anggur 4',
-      owner: 'Pemilik Lahan 4',
-      imageVarietas: 'assets/images/testing_1.jpg',
-      jarak: 60,
-    ),
-    SebaranVarietasModel(
-        namaVarietas: 'Varietas Anggur 5',
-        owner: 'Pemilik Lahan 5',
-        imageVarietas: 'assets/images/testing_1.jpg',
-        jarak: 90
-    ),
-    SebaranVarietasModel(
-      namaVarietas: 'Varietas Anggur 6',
-      owner: 'Pemilik Lahan 6',
-      imageVarietas: 'assets/images/testing_2.jpg',
-      jarak: 80,
-    ),
-    SebaranVarietasModel(
-      namaVarietas: 'Varietas Anggur 7',
-      owner: 'Pemilik Lahan 7',
+      namaVarietas: 'Anggur Jupiter',
+      namaPemilik: 'Maulana Fauzan',
+      alamat: 'Pamulang, Tangerang Selatan',
       imageVarietas: 'assets/images/testing_3.jpg',
-      jarak: 70,
+      luasLahan: 200,
+      descVarietas: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ),
     SebaranVarietasModel(
-      namaVarietas: 'Varietas Anggur 8',
-      owner: 'Pemilik Lahan 8',
+      namaVarietas: 'Anggur Transfigurasi',
+      namaPemilik: 'Made Cahya',
+      alamat: 'Ciputat',
       imageVarietas: 'assets/images/testing_1.jpg',
-      jarak: 60,
+      luasLahan: 200,
+      descVarietas: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    ),
+    SebaranVarietasModel(
+      namaVarietas: 'Anggur Harlod',
+      namaPemilik: 'Putu Romy',
+      alamat: 'Serpong, Tangerang Selatan',
+      imageVarietas: 'assets/images/testing_2.jpg',
+      luasLahan: 200,
+      descVarietas: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    ),
+    SebaranVarietasModel(
+      namaVarietas: 'Anggur Dixon',
+      namaPemilik: 'Made Fajar',
+      alamat: 'Pondok Aren, Tangerang Selatan',
+      imageVarietas: 'assets/images/testing_3.jpg',
+      luasLahan: 200,
+      descVarietas: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    ),
+    SebaranVarietasModel(
+      namaVarietas: 'Anggur Victor',
+      namaPemilik: 'Gede Bayu',
+      alamat: 'Karawaci, Tangerang Selatan',
+      imageVarietas: 'assets/images/testing_1.jpg',
+      luasLahan: 200,
+      descVarietas: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ),
   ];
 
@@ -87,25 +96,30 @@ class _SebaranVarietasPageState extends State<SebaranVarietasPage> {
       ),
       body: ListView.builder(
         itemCount: sebaranVarietas.length,
+        shrinkWrap: true,
         itemBuilder: (context, int index) {
           return Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 8.0,
-              vertical: 2.0,
+              vertical: 3.0,
             ),
-            child: SebaranCard(
-              name: sebaranVarietas[index].namaVarietas,
-              owner: sebaranVarietas[index].owner,
-              jarak: sebaranVarietas[index].jarak,
-              imagePath: sebaranVarietas[index].imageVarietas,
-              onTap: () {},
+            child: CardSebaranVarietas(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailSebaranVarietas(data: sebaranVarietas[index]),
+                  )
+                );
+              },
+              data: sebaranVarietas[index],
             ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push(const VarietasMap());
+          context.push(const MapVarietas());
         },
         backgroundColor: AppColors.white,
         child: const Icon(

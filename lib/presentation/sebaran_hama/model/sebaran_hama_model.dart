@@ -1,13 +1,15 @@
 class SebaranHamaModel {
-  String namaHama;
-  String owner;
+  String namaOpt;
+  String namaPemilik;
+  String alamat;
   String imageHama;
-  int jarak;
+  String solusiPenanganan;
 
   SebaranHamaModel({
-    required this.namaHama,
-    required this.owner,
+    required this.namaOpt,
+    required this.namaPemilik,
+    required this.alamat,
     required this.imageHama,
-    required this.jarak,
+    required this.solusiPenanganan,
   });
 }

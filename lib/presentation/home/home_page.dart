@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/presentation/hama/pages/hama_page.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/pages/sebaran_hama_page.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/sebaran_varietas_page.dart';
+import 'package:grapegrow_apps/presentation/varietas/pages/varietas_page.dart';
 import 'package:grapegrow_apps/widgets/category_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,7 +80,9 @@ class _HomePageState extends State<HomePage> {
                     child: CategoryCard(
                       imagePath: "assets/icons/icon_anggur.svg",
                       name: 'Varietas Anggur',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(const VarietasPage());
+                      },
                     ),
                   ),
                   Flexible(
@@ -91,13 +96,15 @@ class _HomePageState extends State<HomePage> {
                     child: CategoryCard(
                       imagePath: 'assets/icons/icon_hama.svg',
                       name: 'Hama & Penyakit',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(const HamaPage());
+                      },
                     ),
                   ),
                   Flexible(
                     child: CategoryCard(
-                      imagePath: 'assets/icons/icon_calendar.svg',
-                      name: 'Agenda Kegiatan',
+                      imagePath: 'assets/icons/icon_cuaca.svg',
+                      name: 'Prediksi Cuaca',
                       onPressed: () {},
                     ),
                   ),
@@ -120,7 +127,9 @@ class _HomePageState extends State<HomePage> {
                     child: CategoryCard(
                       imagePath: 'assets/icons/icon_penyakit.svg',
                       name: 'Sebaran Hama & Penyakit',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(SebaranHamaPage());
+                      },
                     ),
                   ),
                 ],

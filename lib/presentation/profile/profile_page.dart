@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/component/buttons.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
+import 'package:grapegrow_apps/presentation/auth/bloc/logout/logout_bloc.dart';
+import 'package:grapegrow_apps/presentation/auth/pages/login_page.dart';
 import 'package:grapegrow_apps/widgets/profile_widget.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -8,7 +13,7 @@ class ProfilePage extends StatelessWidget {
 
   const ProfilePage({super.key});
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -90,7 +95,12 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
                 Button.filled(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<LogoutBloc>().add(const LogoutEvent.logout());
+                    AuthLocalDatasource().removeAuthData();
+
+                    context.pushReplacement(const LoginPage());
+                  },
                   label: 'Keluar',
                   color: Colors.red,
                 ),

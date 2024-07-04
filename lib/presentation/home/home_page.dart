@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
+import 'package:grapegrow_apps/data/models/responses/auth_response_model.dart';
 import 'package:grapegrow_apps/presentation/hama/pages/hama_page.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/pages/sebaran_hama_page.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/sebaran_varietas_page.dart';
@@ -17,7 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final String fontPoppins = 'FontPoppins';
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -35,20 +37,28 @@ class _HomePageState extends State<HomePage> {
                   'Selamat Datang',
                   style: TextStyle(
                     fontFamily: fontPoppins,
-                    fontSize: 14,
+                    fontSize: 12,
                     color: AppColors.white,
                   ),
                 ),
-                Text(
-                  'Gede Dito April Yanto Wijaya',
-                  style: TextStyle(
-                    fontFamily: fontPoppins,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
-                    color: AppColors.white,
-                  ),
-                  maxLines: 1,
+                FutureBuilder<AuthResponseModel>(
+                  future: AuthLocalDatasource().getAuthData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data!.user.name,
+                        style: TextStyle(
+                          fontFamily: fontPoppins,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          overflow: TextOverflow.ellipsis,
+                          color: AppColors.white
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }
                 ),
               ],
             ),
@@ -128,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                       imagePath: 'assets/icons/icon_penyakit.svg',
                       name: 'Sebaran Hama & Penyakit',
                       onPressed: () {
-                        context.push(SebaranHamaPage());
+                        context.push(const SebaranHamaPage());
                       },
                     ),
                   ),

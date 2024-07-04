@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/component/buttons.dart';
 import 'package:grapegrow_apps/core/component/custom_input_field.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
+import 'package:grapegrow_apps/data/models/request/login_request_model.dart';
 import 'package:grapegrow_apps/main.dart';
-import 'package:grapegrow_apps/presentation/auth/register_page.dart';
+import 'package:grapegrow_apps/presentation/auth/bloc/login/login_bloc.dart';
+import 'package:grapegrow_apps/presentation/auth/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
-  @override 
+  @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
@@ -25,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -41,12 +46,11 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   height: 150.0,
                   decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/testing_1.jpg',
-                      ),
-                    )
-                  ),
+                      image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/testing_1.jpg',
+                    ),
+                  )),
                 ),
                 const SizedBox(height: 8.0),
                 Text(
@@ -82,15 +86,60 @@ class _LoginPageState extends State<LoginPage> {
               isNonPasswordField: false,
             ),
             const SizedBox(height: 50.0),
-            Button.filled(
-              onPressed: () {
-                Navigator.push(context,
-                  MaterialPageRoute(
-                    builder: (context) => const DashboardPage()
+            BlocConsumer<LoginBloc, LoginState>(
+              listener: (context, state) {
+                state.maybeWhen(
+                  orElse: () {},
+                  success: (data) {
+                    // Menyimpan data ke local storage
+                    AuthLocalDatasource().saveAuthData(data);
+
+                    // Jika berhasil
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Login Berhasil",
+                          style: TextStyle(
+                            color: AppColors.white,
+                          ),
+                        ),
+                        backgroundColor: AppColors.primary,
+                      ),
+                    );
+                    context.pushReplacement(const DashboardPage());
+                  },
+                  error: (message) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(message),
+                        backgroundColor: Colors.redAccent,
+                      )
+                    );
+                  }
+                );
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () {
+                    return Button.filled(
+                      onPressed: () {
+                        final requestModel = LoginRequestModel(
+                          email: emailController.text,
+                          password: passwordController.text
+                        );
+
+                        context
+                          .read<LoginBloc>()
+                          .add(LoginEvent.login(requestModel));
+                      },
+                      label: "Masuk",
+                    );
+                  },
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
                   )
                 );
               },
-              label: 'Masuk',
             ),
             const SizedBox(height: 20.0),
             Button.outlined(

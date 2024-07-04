@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/add_varietas_map.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/add_varietas_sebaran.dart';
 
-class MapVarietas extends StatefulWidget {
-  const MapVarietas({super.key});
+class MapSebaranVarietas extends StatefulWidget {
+  const MapSebaranVarietas({super.key});
 
-  @override 
-  State<MapVarietas> createState() => _MapVarietasState();
+  @override
+  State<MapSebaranVarietas> createState() => _MapSebaranVarietasState();
 }
 
-class _MapVarietasState extends State<MapVarietas> {
+class _MapSebaranVarietasState extends State<MapSebaranVarietas> {
   final String fontPoppins = 'FontPoppins';
 
   @override 
@@ -36,7 +36,7 @@ class _MapVarietasState extends State<MapVarietas> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AddVarietasMap()
+              builder: (context) => const AddVarietasSebaran()
             ),
           );
         },

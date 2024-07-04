@@ -1,16 +1,62 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/sebaran_varietas/model/sebaran_varietas_model.dart';
+import 'package:grapegrow_apps/data/models/responses/add_sebaran_varietas_response.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class DetailSebaranVarietas extends StatelessWidget {
-  final String fontPoppins = 'FontPoppins';
-  final SebaranVarietasModel data;
+class DetailSebaranVarietas extends StatefulWidget {
+  final SebaranVarietas data;
 
   const DetailSebaranVarietas({
-    super.key,
     required this.data,
+    super.key,
   });
+
+  @override
+  State<DetailSebaranVarietas> createState() => _DetailSebaranVarietasState();
+}
+
+class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
+  final String fontPoppins = 'FontPoppins';
+  String alamat = "";
+
+  // Fungsi Untuk Mengirimkan Pesan Whatshapp
+  Future<void> _launchWhatsApp() async {
+    var phoneNumber = widget.data.user!.phone;
+    var message =
+        "Hallo, Saya *${widget.data.user!.name}* ingin bertanya mengenai Penjualan Bibit *${widget.data.nama}*, Apakah masih tersedia ?";
+
+    final url = Uri.parse("https://wa.me/$phoneNumber/?text=${Uri.parse(message)}");
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch WhatsApp';
+    }
+  }
+
+  // Fungsi Membaca Alamat Pengguna Dari Lat dan Lon Pada Database
+  Future<void> _getAddress() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(widget.data.lat, widget.data.lon);
+      Placemark place = placemarks[0];
+      setState(() {
+        alamat = "${place.street}, ${place.subLocality},"
+            "${place.locality}, ${place.country}";
+      });
+    } catch (e) {
+      alamat = "Tidak Menampilkan Alamat";
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getAddress();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +82,34 @@ class DetailSebaranVarietas extends StatelessWidget {
         child: ListView(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.asset(
-                data.imageVarietas,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(12.0),
+              ),
+              child: CachedNetworkImage(
+                imageUrl:'http://192.168.0.171:8000/storage/${widget.data.gambar}',
+                placeholder: (context, url) => SizedBox(
+                  height: 250,
+                  width: context.deviceWidth,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) {
+                  return const Icon(Icons.error);
+                },
+                height: 250,
                 width: context.deviceWidth,
-                height: 300,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(height: 12.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
                       borderRadius: const BorderRadius.all(
@@ -66,21 +127,25 @@ class DetailSebaranVarietas extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          data.namaPemilik,
+                          widget.data.user!.name,
                           style: TextStyle(
                             fontFamily: fontPoppins,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
                             overflow: TextOverflow.ellipsis,
                           ),
                           maxLines: 1,
                         ),
-                        Text(
-                          data.alamat,
-                          style: TextStyle(
-                            fontFamily: fontPoppins,
-                            fontSize: 12,
-                            color: AppColors.grey,
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            alamat,
+                            style: TextStyle(
+                              fontFamily: fontPoppins,
+                              fontSize: 12,
+                              color: AppColors.grey,
+                            ),
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -89,7 +154,7 @@ class DetailSebaranVarietas extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  '31 Mei 2024',
+                  DateFormat('dd MMMM yyyy').format(widget.data.createdAt),
                   style: TextStyle(
                     fontFamily: fontPoppins,
                     fontSize: 12,
@@ -100,11 +165,11 @@ class DetailSebaranVarietas extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             Text(
-              data.namaVarietas,
+              widget.data.nama,
               style: TextStyle(
                 fontFamily: fontPoppins,
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 8.0),
@@ -113,7 +178,7 @@ class DetailSebaranVarietas extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Luas Lahan',
+                  'Jumlah Tanaman',
                   style: TextStyle(
                     fontFamily: fontPoppins,
                     fontWeight: FontWeight.w500,
@@ -122,10 +187,10 @@ class DetailSebaranVarietas extends StatelessWidget {
                 ),
                 const SizedBox(height: 4.0),
                 Text(
-                  data.luasLahan.toString(),
+                  widget.data.jumlahTanaman.toString(),
                   style: TextStyle(
                     fontFamily: fontPoppins,
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
               ],
@@ -145,10 +210,10 @@ class DetailSebaranVarietas extends StatelessWidget {
                 ),
                 const SizedBox(height: 4.0),
                 Text(
-                  data.descVarietas,
+                  widget.data.deskripsi,
                   style: TextStyle(
                     fontFamily: fontPoppins,
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
               ],
@@ -168,15 +233,37 @@ class DetailSebaranVarietas extends StatelessWidget {
                 ),
                 const SizedBox(height: 4.0),
                 Text(
-                  'Iya',
+                  widget.data.jualBibit == true ? "Iya" : "Tidak",
                   style: TextStyle(
                     fontFamily: fontPoppins,
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 ),
               ],
             ),
           ],
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: widget.data.jualBibit != false,
+        child: FloatingActionButton.extended(
+          backgroundColor: AppColors.primary,
+          onPressed: () {
+            _launchWhatsApp();
+          },
+          label: Text(
+            "Hubungi",
+            style: TextStyle(
+              fontFamily: fontPoppins,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.white,
+            ),
+          ),
+          icon: const Icon(
+            Icons.phone,
+            color: AppColors.white,
+          ),
         ),
       ),
     );

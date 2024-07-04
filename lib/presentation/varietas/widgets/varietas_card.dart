@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/data/models/responses/varietas_response_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:grapegrow_apps/presentation/varietas/pages/detail_varietas_page.dart';
 
-class ListItemCard extends StatelessWidget {
+class VarietasCard extends StatelessWidget {
   final String fontPoppins = 'FontPoppins';
+  final Varietas data;
 
-  final VoidCallback onTap;
-  final String name;
-  final String desc;
-  final String imagePath;
-
-  const ListItemCard({
+  const VarietasCard({
     super.key,
-    required this.onTap,
-    required this.name,
-    required this.desc,
-    required this.imagePath,
+    required this.data,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        context.push(
+          DetailVarietasPage(data: data),
+        );
+      },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+        ),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12.0),
@@ -42,9 +45,20 @@ class ListItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                child: Image.asset(
-                  imagePath,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12.0),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: 'http://192.168.0.171:8000/storage/${data.gambarVarietas}',
+                  placeholder: (context, url) => const SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Center(child: CircularProgressIndicator())
+                  ),
+                  errorWidget: (context, url, error) {
+                    // print('$error');
+                    return const Icon(Icons.error);
+                  },
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -57,7 +71,7 @@ class ListItemCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      name,
+                      data.nama,
                       style: TextStyle(
                         fontFamily: fontPoppins,
                         fontSize: 16,
@@ -68,7 +82,7 @@ class ListItemCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4.0),
                     Text(
-                      desc,
+                      data.deskripsi,
                       style: TextStyle(
                         fontFamily: fontPoppins,
                         fontSize: 12,

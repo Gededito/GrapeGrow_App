@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/hama/model/hama_model.dart';
+import 'package:grapegrow_apps/data/models/responses/hama_response_model.dart';
 
 class DetailHamaPage extends StatelessWidget {
   final String fontPoppins = 'FontPoppins';
 
-  final HamaModel data;
+  final Hama data;
 
   const DetailHamaPage({
     super.key,
@@ -37,19 +38,31 @@ class DetailHamaPage extends StatelessWidget {
         child: ListView(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.asset(
-                data.imageHama,
-                width: context.deviceWidth,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(12.0),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: 'http://192.168.0.171:8000/storage/${data.gambar}',
+                placeholder: (context, url) => SizedBox(
+                  height: 300,
+                  width: context.deviceWidth,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) {
+                  return const Icon(Icons.error);
+                },
                 height: 300,
+                width: context.deviceWidth,
                 fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 12.0),
             Text(
-              data.namaHama,
+              data.nama,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontFamily: fontPoppins,
                 fontWeight: FontWeight.w600,
               ),
@@ -58,14 +71,14 @@ class DetailHamaPage extends StatelessWidget {
             Text(
               'Gejala',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: fontPoppins,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 4.0),
             Text(
-              data.gejalaHama,
+              data.gejala,
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: fontPoppins,
@@ -75,14 +88,14 @@ class DetailHamaPage extends StatelessWidget {
             Text(
               'Tindakan Pencegahan',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: fontPoppins,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 4.0),
             Text(
-              data.solusiHama,
+              data.solusi,
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: fontPoppins,
@@ -92,14 +105,14 @@ class DetailHamaPage extends StatelessWidget {
             Text(
               'Apa Penyebabnya ?',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: fontPoppins,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 4.0),
             Text(
-              data.penyebabHama,
+              data.penyebab,
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: fontPoppins,

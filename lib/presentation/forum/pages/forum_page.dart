@@ -1,59 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/forum/model/forum_model.dart';
+import 'package:grapegrow_apps/presentation/forum/bloc/list_post/list_post_bloc.dart';
 import 'package:grapegrow_apps/presentation/forum/pages/add_forum.dart';
 import 'package:grapegrow_apps/presentation/forum/widget/card_forum.dart';
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
 
-  @override 
+  @override
   State<ForumPage> createState() => _ForumPageState();
 }
 
 class _ForumPageState extends State<ForumPage> {
   final String fontPoppins = 'FontPoppins';
 
-  final List<ForumModel> forum = [
-    ForumModel(
-      namaPengguna: 'Gede Dito',
-      tanggalBuat: 'tanggal pembuatan',
-      imagePath: 'assets/images/testing_1.jpg',
-      contentText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaeca',
-    ),
-    ForumModel(
-      namaPengguna: 'Akmal Fauzan',
-      tanggalBuat: 'tanggal pembuatan',
-      imagePath: 'assets/images/testing_2.jpg',
-      contentText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaeca',
-    ),
-    ForumModel(
-      namaPengguna: 'Gede Dito',
-      tanggalBuat: 'tanggal pembuatan',
-      imagePath: 'assets/images/testing_1.jpg',
-      contentText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaeca',
-    ),
-    ForumModel(
-      namaPengguna: 'Akmal Fauzan',
-      tanggalBuat: 'tanggal pembuatan',
-      imagePath: 'assets/images/testing_2.jpg',
-      contentText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaeca',
-    ),
-    ForumModel(
-      namaPengguna: 'Gede Dito',
-      tanggalBuat: 'tanggal pembuatan',
-      imagePath: 'assets/images/testing_1.jpg',
-      contentText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaeca',
-    ),
-    ForumModel(
-      namaPengguna: 'Akmal Fauzan',
-      tanggalBuat: 'tanggal pembuatan',
-      imagePath: 'assets/images/testing_2.jpg',
-      contentText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaeca',
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    context.read<ListPostBloc>().add(const ListPostEvent.getAllPost());
+  }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -72,15 +40,31 @@ class _ForumPageState extends State<ForumPage> {
           color: AppColors.white,
         ),
       ),
-      body: ListView.builder(
-        itemCount: forum.length,
-        itemBuilder: (context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 8.0
+      body: BlocBuilder<ListPostBloc, ListPostState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            orElse: () => const Center(child: Text("Terjadi Error")),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
-            child: CardForum(data: forum[index]),
+            success: (datas) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: datas.posts.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+                    itemBuilder: (context, index) {
+                      return CardForum(
+                        data: datas.posts[index],
+                      );
+                    },
+                  ),
+                ),
+              );
+            }
           );
         },
       ),

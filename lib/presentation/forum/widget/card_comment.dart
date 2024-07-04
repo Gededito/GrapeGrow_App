@@ -1,13 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/forum/model/comment_model.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
+import 'package:grapegrow_apps/data/models/responses/comment_id_forum_response_model.dart';
+import 'package:intl/intl.dart';
 
 class CardComment extends StatefulWidget {
-  final CommentModel comment;
+  final Comment data;
 
   const CardComment({
     super.key,
-    required this.comment,
+    required this.data,
   });
 
   @override
@@ -56,7 +60,7 @@ class _CardCommentState extends State<CardComment> {
                   ),
                   const SizedBox(width: 8.0),
                   Text(
-                    widget.comment.tukangKomentar,
+                    widget.data.user.name,
                     style: TextStyle(
                       fontFamily: fontPoppins,
                       fontSize: 14,
@@ -68,7 +72,7 @@ class _CardCommentState extends State<CardComment> {
                 ],
               ),
               Text(
-                widget.comment.tanggalBuat,
+                DateFormat('dd MMMM yyyy').format(widget.data.createdAt),
                 style: TextStyle(
                   fontFamily: fontPoppins,
                   fontSize: 10,
@@ -79,17 +83,30 @@ class _CardCommentState extends State<CardComment> {
             ],
           ),
           const SizedBox(height: 8.0),
-          Center(
-            child: Image.asset(
-              widget.comment.imagePath,
-              width: 200,
-              height: 100,
-              fit: BoxFit.fill,
+          if (widget.data.gambar!.isNotEmpty) ...[
+            Center(
+              child: CachedNetworkImage(
+                imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
+                placeholder: (context, url) => const SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) {
+                  return const Icon(Icons.error);
+                },
+                width: context.deviceWidth,
+                height: 150,
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
+            const SizedBox(height: 12.0),
+          ],
           const SizedBox(height: 4.0),
           Text(
-            widget.comment.komentar,
+            widget.data.body,
             style: TextStyle(
               fontFamily: fontPoppins,
               fontSize: 12,

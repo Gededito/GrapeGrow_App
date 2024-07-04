@@ -1,24 +1,36 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/component/buttons.dart';
 import 'package:grapegrow_apps/core/component/description_input.dart';
 import 'package:grapegrow_apps/core/component/image_input.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/data/models/request/post_request_model.dart';
+import 'package:grapegrow_apps/presentation/forum/bloc/post/post_bloc.dart';
+import 'package:grapegrow_apps/presentation/forum/pages/forum_page.dart';
 
 class AddForum extends StatefulWidget {
   const AddForum({super.key});
 
-  @override 
+  @override
   State<AddForum> createState() => _AddForumState();
 }
 
 class _AddForumState extends State<AddForum> {
   final String fontPoppins = 'FontPoppins';
-  
-  final pertanyaanController = TextEditingController();
 
-  @override 
+  final contentController = TextEditingController();
+  File? imagePost;
+
+  @override
+  void dispose() {
+    super.dispose();
+    contentController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -44,27 +56,81 @@ class _AddForumState extends State<AddForum> {
             children: [
               DescriptionInput(
                 label: 'Pertanyaan',
-                controller: pertanyaanController,
+                controller: contentController,
               ),
               const SizedBox(
                 height: 12,
               ),
               ImageInput(
                 label: 'Masukan Gambar',
-                onImageSelected: (File? file) {},
+                onImageSelected: (File? file) {
+                  imagePost = file;
+                },
               ),
               const SizedBox(height: 40),
-              Button.filled(
-                onPressed: () {},
-                label: 'Tambahkan',
+              BlocConsumer<PostBloc, PostState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                    orElse: () {},
+                    success: (data) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            "Create Diskusi Berhasil",
+                            style: TextStyle(
+                              color: AppColors.white,
+                            ),
+                          ),
+                          backgroundColor: AppColors.primary,
+                        ),
+                      );
+                      context.pop();
+                    },
+                    error: (message) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(message),
+                          backgroundColor: Colors.redAccent,
+                        )
+                      );
+                    }
+                  );
+                },
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () {
+                      return Button.filled(
+                        onPressed: () {
+                          final requestModel = PostRequestModel(
+                            content: contentController.text,
+                            gambar: imagePost,
+                          );
+
+                          context
+                            .read<PostBloc>()
+                            .add(PostEvent.postForum(requestModel));
+                        },
+                        label: "Tambahkan",
+                      );
+                    },
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  );
+                }
               ),
               const SizedBox(
                 height: 12,
               ),
               Button.outlined(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ForumPage()));
+                },
                 label: 'Batalkan',
-              )
+              ),
             ],
           ),
         ),

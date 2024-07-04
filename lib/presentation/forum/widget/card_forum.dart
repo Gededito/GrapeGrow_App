@@ -1,10 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/forum/model/forum_model.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
+import 'package:grapegrow_apps/data/models/responses/get_post_forum_response_model.dart';
 import 'package:grapegrow_apps/presentation/forum/pages/comment_page.dart';
+import 'package:intl/intl.dart';
 
 class CardForum extends StatefulWidget {
-  final ForumModel data;
+  final Post data;
 
   const CardForum({
     super.key,
@@ -18,14 +22,12 @@ class CardForum extends StatefulWidget {
 class _CardForumState extends State<CardForum> {
   final String fontPoppins = 'FontPoppins';
 
-  final bool likedForum = true;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 12.0,
-        vertical: 12.0,
+        horizontal: 20.0,
+        vertical: 8.0,
       ),
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -59,7 +61,7 @@ class _CardForumState extends State<CardForum> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.data.namaPengguna!,
+                    widget.data.user.name,
                     style: TextStyle(
                       fontFamily: fontPoppins,
                       fontSize: 16,
@@ -69,7 +71,7 @@ class _CardForumState extends State<CardForum> {
                     maxLines: 1,
                   ),
                   Text(
-                    widget.data.tanggalBuat!,
+                    DateFormat('dd MMMM yyyy').format(widget.data.createdAt),
                     style: TextStyle(
                       fontFamily: fontPoppins,
                       fontSize: 12,
@@ -81,21 +83,33 @@ class _CardForumState extends State<CardForum> {
               ),
             ],
           ),
-          const SizedBox(height: 8.0),
-          Center(
-            child: Image.asset(
-              widget.data.imagePath!,
-              width: 200,
-              height: 150,
-              fit: BoxFit.fill,
+          const SizedBox(height: 12.0),
+          if (widget.data.gambar!.isNotEmpty) ...[
+            Center(
+              child: CachedNetworkImage(
+                imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
+                placeholder: (context, url) => const SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) {
+                  return const Icon(Icons.error);
+                },
+                width: context.deviceWidth,
+                height: 150,
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
-          const SizedBox(height: 8.0),
+            const SizedBox(height: 12.0),
+          ],
           Text(
-            widget.data.contentText!,
+            widget.data.content,
             style: TextStyle(
               fontFamily: fontPoppins,
-              fontSize: 12,
+              fontSize: 14,
             ),
           ),
           const SizedBox(height: 8.0),
@@ -112,12 +126,7 @@ class _CardForumState extends State<CardForum> {
               const SizedBox(width: 8.0),
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CommentPage(forumModel: widget.data)
-                    )
-                  );
+                  context.push(CommentPage(post: widget.data));
                 },
                 icon: const Icon(
                   Icons.message,

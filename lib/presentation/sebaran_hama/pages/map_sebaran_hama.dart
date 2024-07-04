@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/sebaran_hama/pages/add_hama_map.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/pages/add_hama_sebaran.dart';
 
-class MapHama extends StatefulWidget {
-  const MapHama({super.key});
+class MapSebaranHama extends StatefulWidget {
+  const MapSebaranHama({super.key});
 
   @override
-  State<MapHama> createState() => _MapHamaState();
+  State<MapSebaranHama> createState() => _MapSebaranHamaState();
 }
 
-class _MapHamaState extends State<MapHama> {
+class _MapSebaranHamaState extends State<MapSebaranHama> {
   final String fontPoppins = 'FontPoppins';
 
   @override
@@ -36,7 +36,7 @@ class _MapHamaState extends State<MapHama> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AddHamaMap()
+              builder: (context) => const AddHamaSebaran()
             ),
           );
         },

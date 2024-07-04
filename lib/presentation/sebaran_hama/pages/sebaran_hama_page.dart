@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/sebaran_hama/model/sebaran_hama_model.dart';
-import 'package:grapegrow_apps/presentation/sebaran_hama/pages/detail_sebaran_hama.dart';
-import 'package:grapegrow_apps/presentation/sebaran_hama/pages/map_hama.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/all_sebaran_hama/all_sebaran_hama_bloc.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/pages/map_sebaran_hama.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/widget/card_sebaran_hama.dart';
 
 class SebaranHamaPage extends StatefulWidget {
@@ -17,50 +17,11 @@ class SebaranHamaPage extends StatefulWidget {
 class _SebaranHamaPageState extends State<SebaranHamaPage> {
   final String fontPoppins = 'FontPoppins';
 
-  final List<SebaranHamaModel> sebaranHama = [
-    SebaranHamaModel(
-      namaOpt: 'Kutu Daun',
-      namaPemilik: 'Albert Anthonius',
-      imageHama: 'assets/images/testing_1.jpg',
-      alamat: 'Balaraja, Kabupaten Tangerang',
-      solusiPenanganan: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    ),
-    SebaranHamaModel(
-      namaOpt: 'Leafroll Virus',
-      namaPemilik: 'Akmal Christhoper',
-      imageHama: 'assets/images/testing_2.jpg',
-      alamat: 'Bintaro, Tangerang Selatan',
-      solusiPenanganan: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    ),
-    SebaranHamaModel(
-      namaOpt: 'Downy Mildew',
-      namaPemilik: 'Maulana Fauzan',
-      imageHama: 'assets/images/testing_3.jpg',
-      alamat: 'Pamulang, Tangerang Selatan',
-      solusiPenanganan: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    ),
-    SebaranHamaModel(
-      namaOpt: 'Anthracnose',
-      namaPemilik: 'Made Cahya',
-      imageHama: 'assets/images/testing_1.jpg',
-      alamat: 'Ciputat, Tangerang Selatan',
-      solusiPenanganan: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    ),
-    SebaranHamaModel(
-      namaOpt: 'Botrytis Cinerea',
-      namaPemilik: 'Made Fajar',
-      imageHama: 'assets/images/testing_2.jpg',
-      alamat: 'Pondok Aren, Tangerang Selatan',
-      solusiPenanganan: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    ),
-    SebaranHamaModel(
-      namaOpt: 'Fanleaf Virus',
-      namaPemilik: 'Gede Bayu',
-      imageHama: 'assets/images/testing_3.jpg',
-      alamat: 'Karawaci, Tangerang Selatan',
-      solusiPenanganan: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    context.read<AllSebaranHamaBloc>().add(const AllSebaranHamaEvent.getAllSebaran());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,32 +42,35 @@ class _SebaranHamaPageState extends State<SebaranHamaPage> {
           color: AppColors.white,
         ),
       ),
-      body: ListView.builder(
-        itemCount: sebaranHama.length,
-        shrinkWrap: true,
-        itemBuilder: (context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 3.0,
+      body: BlocBuilder<AllSebaranHamaBloc, AllSebaranHamaState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            orElse: () => const Center(child: Text("Data Tidak Muncul")),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
-            child: CardSebaranHama(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailSebaranHama(data: sebaranHama[index]),
-                  )
-                );
-              },
-              data: sebaranHama[index],
-            ),
+            success: (datas) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: datas.sebaranHama.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+                    itemBuilder: (context, index) {
+                      return CardSebaranHama(data: datas.sebaranHama[index]);
+                    },
+                  ),
+                ),
+              );
+            }
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push(const MapHama());
+          context.push(const MapSebaranHama());
         },
         backgroundColor: AppColors.white,
         child: const Icon(

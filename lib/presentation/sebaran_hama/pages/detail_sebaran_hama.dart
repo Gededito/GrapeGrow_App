@@ -1,17 +1,46 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/presentation/sebaran_hama/model/sebaran_hama_model.dart';
+import 'package:grapegrow_apps/data/models/responses/add_sebaran_hama_response.dart';
+import 'package:intl/intl.dart';
 
-class DetailSebaranHama extends StatelessWidget {
-  final String fontPoppins = 'FontPoppins';
-
-  final SebaranHamaModel data;
+class DetailSebaranHama extends StatefulWidget {
+  final SebaranHama data;
 
   const DetailSebaranHama({
     super.key,
     required this.data,
   });
+
+  @override
+  State<DetailSebaranHama> createState() => _DetailSebaranHamaState();
+}
+
+class _DetailSebaranHamaState extends State<DetailSebaranHama> {
+  final String fontPoppins = 'FontPoppins';
+  String alamat = "";
+
+  // Fungsi Membaca Alamat Pengguna Dari Lat dan Lon Pada Database
+  Future<void> _getAddress() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(widget.data.lat, widget.data.lon);
+      Placemark place = placemarks[0];
+      setState(() {
+        alamat = "${place.street}, ${place.subLocality},"
+            "${place.locality}, ${place.country}";
+      });
+    } catch (e) {
+      alamat = "Tidak Menampilkan Alamat";
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getAddress();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +66,34 @@ class DetailSebaranHama extends StatelessWidget {
         child: ListView(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.asset(
-                data.imageHama,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(12.0),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: 'http://192.168.0.171:8000/storage/${widget.data.gambar}',
+                placeholder: (context, url) => SizedBox(
+                  height: 250,
+                  width: context.deviceWidth,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) {
+                  return const Icon(Icons.error);
+                },
+                height: 250,
                 width: context.deviceWidth,
-                height: 300,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(height: 12.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
                       borderRadius: const BorderRadius.all(
@@ -67,21 +111,25 @@ class DetailSebaranHama extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          data.namaPemilik,
+                          widget.data.user!.name,
                           style: TextStyle(
                             fontFamily: fontPoppins,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             fontSize: 16,
                             overflow: TextOverflow.ellipsis,
                           ),
                           maxLines: 1,
                         ),
-                        Text(
-                          data.alamat,
-                          style: TextStyle(
-                            fontFamily: fontPoppins,
-                            fontSize: 12,
-                            color: AppColors.grey,
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            alamat,
+                            style: TextStyle(
+                              fontFamily: fontPoppins,
+                              fontSize: 12,
+                              color: AppColors.grey,
+                            ),
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -90,7 +138,7 @@ class DetailSebaranHama extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  '31 Mei 2023',
+                  DateFormat('dd MMMM yyyy').format(widget.data.createdAt),
                   style: TextStyle(
                     fontFamily: fontPoppins,
                     fontSize: 12,
@@ -101,11 +149,11 @@ class DetailSebaranHama extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             Text(
-              data.namaOpt,
+              widget.data.nama,
               style: TextStyle(
                 fontFamily: fontPoppins,
                 fontSize: 20,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 8.0),
@@ -123,7 +171,30 @@ class DetailSebaranHama extends StatelessWidget {
                 ),
                 const SizedBox(height: 4.0),
                 Text(
-                  data.solusiPenanganan,
+                  widget.data.solusi,
+                  style: TextStyle(
+                    fontFamily: fontPoppins,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Gejala Yang Dialami',
+                  style: TextStyle(
+                    fontFamily: fontPoppins,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  widget.data.gejala,
                   style: TextStyle(
                     fontFamily: fontPoppins,
                     fontSize: 12,

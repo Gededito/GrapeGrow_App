@@ -12,6 +12,7 @@ import 'package:grapegrow_apps/main.dart';
 import 'package:grapegrow_apps/presentation/auth/bloc/register/register_bloc.dart';
 import 'package:grapegrow_apps/presentation/auth/pages/login_page.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -24,10 +25,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final String fontPoppins = 'FontPoppins';
 
   final namaController = TextEditingController();
-  final nomorWaController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  File? _image;
+  late String nomorWaController;
+  File? imageFile;
   bool obscureText = true;
 
   void toggleObscureText() {
@@ -40,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
-        _image = File(image.path);
+        imageFile = File(image.path);
       });
     }
   }
@@ -73,9 +74,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   onTap: _getImage,
                   child: CircleAvatar(
                     radius: 60,
-                    backgroundImage: _image != null ? FileImage(_image!) : null,
+                    backgroundImage: imageFile != null ? FileImage(imageFile!) : null,
                     backgroundColor: AppColors.grey.withOpacity(0.5),
-                    child: _image == null
+                    child: imageFile == null
                         ? const Icon(Icons.add_a_photo, color: AppColors.white)
                         : null,
                   ),
@@ -92,16 +93,19 @@ class _RegisterPageState extends State<RegisterPage> {
               textInputAction: TextInputAction.next,
             ),
             const SizedBox(height: 24.0),
-            CustomInputField(
-              label: 'Masukan No Whatshapp',
-              controller: nomorWaController,
-              toggleObscureText: null,
-              prefIcon: const Icon(Icons.dialpad),
-              labelText: 'Nomor Whatshapp',
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
+            IntlPhoneField(
+              decoration: const InputDecoration(
+                labelText: "Nomor Whatsapp",
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(),
+                ),
+              ),
+              onChanged: (phone) {
+                nomorWaController = phone.completeNumber;
+              },
+              initialCountryCode: 'ID',
             ),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 4.0),
             CustomInputField(
               label: 'Masukan Email Anda',
               controller: emailController,
@@ -131,7 +135,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Sign up successful!"),
+                        content: Text(
+                            "Daftar Akun Berhasil!",
+                          style: TextStyle(
+                            color: AppColors.white
+                          ),
+                        ),
                         backgroundColor: AppColors.primary,
                       )
                     );
@@ -155,8 +164,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         final requestModel = RegisterRequestModel(
                           name: namaController.text,
                           email: emailController.text,
-                          phone: nomorWaController.text.toString(),
                           password: passwordController.text,
+                          phone: nomorWaController,
+                          gambar: imageFile!
                         );
 
                         context

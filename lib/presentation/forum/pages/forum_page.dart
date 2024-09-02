@@ -43,24 +43,30 @@ class _ForumPageState extends State<ForumPage> {
       body: BlocBuilder<ListPostBloc, ListPostState>(
         builder: (context, state) {
           return state.maybeWhen(
-            orElse: () => const Center(child: Text("Terjadi Error")),
+            orElse: () => const Center(child: Text("Data Tidak Muncul")),
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
             success: (datas) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: datas.posts.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 8.0),
-                    itemBuilder: (context, index) {
-                      return CardForum(
-                        data: datas.posts[index],
-                      );
-                    },
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ListPostBloc>().add(const ListPostEvent.getAllPost());
+                  await Future.delayed(const Duration(milliseconds: 1000));
+                },
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: datas.posts.length,
+                      separatorBuilder: (context, index) => const SizedBox(height: 8.0),
+                      itemBuilder: (context, index) {
+                        return CardForum(
+                          data: datas.posts[index],
+                        );
+                      },
+                    ),
                   ),
                 ),
               );

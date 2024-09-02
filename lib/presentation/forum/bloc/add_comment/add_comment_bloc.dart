@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grapegrow_apps/data/datasources/forum_remote_datasource.dart';
 import 'package:grapegrow_apps/data/models/request/comment_request_model.dart';
-import 'package:grapegrow_apps/data/models/responses/comment_forum_response.dart';
+import 'package:grapegrow_apps/data/models/responses/forum/add_comment_forum_response.dart';
 
 part 'add_comment_bloc.freezed.dart';
 part 'add_comment_event.dart';

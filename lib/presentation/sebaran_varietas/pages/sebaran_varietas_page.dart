@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/data/models/maps/map_model.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/add_map_varietas/add_map_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/all_sebaran_varietas/all_sebaran_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/map_sebaran_varietas.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/widget/card_sebaran_varietas.dart';
@@ -15,11 +17,13 @@ class SebaranVarietasPage extends StatefulWidget {
 
 class _SebaranVarietasPageState extends State<SebaranVarietasPage> {
   final String fontPoppins = 'FontPoppins';
+  MapModel? mapModel;
 
   @override
   void initState() {
     super.initState();
     context.read<AllSebaranVarietasBloc>().add(const AllSebaranVarietasEvent.getAllSebaran());
+    context.read<AddMapVarietasBloc>().add(const AddMapVarietasEvent.getCurrentPosition());
   }
 
   @override
@@ -67,16 +71,38 @@ class _SebaranVarietasPageState extends State<SebaranVarietasPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push(const MapSebaranVarietas());
-        },
-        backgroundColor: AppColors.white,
-        child: const Icon(
-          Icons.location_on_outlined,
-          size: 30,
-          color: AppColors.primary,
-        ),
+      floatingActionButton: BlocBuilder<AddMapVarietasBloc, AddMapVarietasState>(
+        builder: (context, state) {
+          return state.maybeMap(
+            orElse: () => const CircularProgressIndicator(),
+            loaded: (data) {
+             mapModel = data.data;
+
+             return FloatingActionButton.extended(
+               heroTag: "Map Sebaran",
+               onPressed: () {
+                 context.push(MapSebaranVarietas(
+                   lat: data.data.latLng.latitude,
+                   lon: data.data.latLng.longitude,
+                 ));
+               },
+               backgroundColor: AppColors.white,
+               icon: const Icon(
+                 Icons.location_on_rounded,
+                 size: 30,
+                 color: AppColors.primary,
+               ),
+               label: Text(
+                 "Map Sebaran",
+                 style: TextStyle(
+                     fontFamily: fontPoppins,
+                     color: AppColors.primary
+                 ),
+               ),
+             );
+            }
+          );
+        }
       ),
     );
   }

@@ -1,148 +1,211 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
 import 'package:grapegrow_apps/data/models/request/comment_request_model.dart';
 import 'package:grapegrow_apps/data/models/request/post_request_model.dart';
-import 'package:grapegrow_apps/data/models/responses/comment_forum_response.dart';
-import 'package:grapegrow_apps/data/models/responses/comment_id_forum_response_model.dart';
-import 'package:grapegrow_apps/data/models/responses/get_post_forum_response_model.dart';
-import 'package:grapegrow_apps/data/models/responses/post_forum_response_model.dart';
+import 'package:grapegrow_apps/data/models/responses/forum/add_comment_forum_response.dart';
+import 'package:grapegrow_apps/data/models/responses/forum/add_post_forum_response_model.dart';
+import 'package:grapegrow_apps/data/models/responses/forum/get_all_post_forum_response_model.dart';
+import 'package:grapegrow_apps/data/models/responses/forum/get_comment_id_forum_response_model.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:http/http.dart' as http;
 
 class ForumRemoteDatasource {
   
   // Create Post Forum
-  Future<Either<String, PostForumResponse>> createPost(
+  Future<Either<String, AddPostForumDiskusiResponse>> createPost(
     PostRequestModel postRequest,
   ) async {
-    final authData = await AuthLocalDatasource().getAuthData();
 
-    final uri = Uri.parse("http://192.168.0.171:8000/api/post/store");
-    var request = http.MultipartRequest('POST', uri);
+    try {
+      final authData = await AuthLocalDatasource().getAuthData();
 
-    final fileName = postRequest.gambar;
+      final uri = Uri.parse("${Variables.baseUrl}/api/post/store");
 
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer ${authData.accessToken}',
-    };
+      final Map<String, String> headers = {
+        'Authorization': 'Bearer ${authData!.accessToken}',
+      };
 
-    final Map<String, String> fields = {
-      "content": postRequest.content,
-    };
+      http.Response response;
 
-    if (fileName != null) {
-      final multiPartFile = await http.MultipartFile.fromPath(
-        'gambar',
-        fileName.path,
-      );
-      request.files.add(multiPartFile);
-    } else {
-      print('No Image Selected');
-    }
+      if (postRequest.gambar == null) {
+        headers['Content-Type'] = 'application/json; charset=UTF-8';
+        response = await http.post(
+          uri,
+          headers: headers,
+          body: jsonEncode({'content': postRequest.content}),
+        );
+      } else {
+        var request = http.MultipartRequest('POST', uri);
+        request.headers.addAll(headers);
+        request.files.add(await http.MultipartFile.fromPath(
+          'gambar',
+          postRequest.gambar!.path
+        ));
+        request.fields['content'] = postRequest.content;
+        response = await http.Response.fromStream(await request.send());
+      }
 
-    request.fields.addAll(fields);
-    request.headers.addAll(headers);
+      final statusCode = response.statusCode;
+      final responseData = response.body;
 
-    final http.StreamedResponse streamedResponse = await request.send();
-    final int statusCode = streamedResponse.statusCode;
+      if (statusCode == 201) {
+        return Right(AddPostForumDiskusiResponse.fromMap(jsonDecode(responseData)));
+      } else {
+        return const Left('Failed Create Post Forum');
+      }
 
-    final Uint8List responseList = await streamedResponse.stream.toBytes();
-    final String responseData = String.fromCharCodes(responseList);
-
-    if (statusCode == 201) {
-      return Right(PostForumResponse.fromMap(jsonDecode(responseData)));
-    } else {
-      return const Left('Failed Create Post Forum');
+    } on SocketException {
+      return const Left("No Internet Connection");
+    } catch (e) {
+      // print(e.toString());
+      return Left("An error occurred: ${e.toString()}");
     }
   }
 
   // Get All Post Forum
   Future<Either<String, GetAllPostForumResponse>> getAllPost() async {
-    final authData = await AuthLocalDatasource().getAuthData();
 
-    final response = await http.get(
-      Uri.parse("http://192.168.0.171:8000/api/posts"),
-      headers: <String, String> {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${authData.accessToken}',
-      },
-    );
+    try {
+      final authData = await AuthLocalDatasource().getAuthData();
 
-    if (response.statusCode == 200) {
-      return Right(GetAllPostForumResponse.fromMap(jsonDecode(response.body)));
-    } else {
-      return const Left('Gagal Memunculkan Data Post');
+      final response = await http.get(
+        Uri.parse("${Variables.baseUrl}/api/posts"),
+        headers: <String, String> {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${authData!.accessToken}',
+        }
+      );
+
+      if (response.statusCode == 200) {
+        return Right(GetAllPostForumResponse.fromMap(jsonDecode(response.body)));
+      } else {
+        return const Left("Failed Get All Post");
+      }
+
+    } on SocketException {
+      return const Left("No Internet Connection");
+    } catch (e) {
+      return Left("An error occurred: ${e.toString()}");
     }
   }
 
   // Create Comment Forum
-  Future<Either<String, CommentForumResponse>> createCommentByIdForum(
+  Future<Either<String, AddCommentByIdForumResponse>> createCommentByIdForum(
       CommentRequestModel commentRequest,
-      String id,
+      int id,
   ) async {
-    final authData = await AuthLocalDatasource().getAuthData();
 
-    final uri = Uri.parse("http://192.168.0.171:8000/api/post/comment/$id");
-    var request = http.MultipartRequest('POST', uri);
+    try {
+      final authData = await AuthLocalDatasource().getAuthData();
 
-    final fileName = commentRequest.gambar;
+      final uri = Uri.parse("${Variables.baseUrl}/api/post/comment/$id");
+      var request = http.MultipartRequest('POST', uri);
 
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer ${authData.accessToken}',
-    };
+      final fileName = commentRequest.gambar;
 
-    final Map<String, String> fields = {
-      "body": commentRequest.body,
-    };
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${authData!.accessToken}',
+      };
 
-    if (fileName != null) {
-      final multiPartFile = await http.MultipartFile.fromPath(
-        'gambar',
-        fileName.path
-      );
-      request.files.add(multiPartFile);
-    } else {
-      print('No Image Selected');
-    }
+      final Map<String, String> fields = {
+        "body": commentRequest.body,
+      };
 
-    request.fields.addAll(fields);
-    request.headers.addAll(headers);
+      if (fileName != null) {
+        final multiPartFile = await http.MultipartFile.fromPath(
+            'gambar',
+            fileName.path
+        );
+        request.files.add(multiPartFile);
+      }
 
-    final http.StreamedResponse streamedResponse = await request.send();
-    final int statusCode = streamedResponse.statusCode;
+      request.fields.addAll(fields);
+      request.headers.addAll(headers);
 
-    final Uint8List responseList = await streamedResponse.stream.toBytes();
-    final String responseData = String.fromCharCodes(responseList);
+      final http.StreamedResponse streamedResponse = await request.send();
+      final int statusCode = streamedResponse.statusCode;
 
-    if (statusCode == 201) {
-      return Right(CommentForumResponse.fromMap(jsonDecode(responseData)));
-    } else {
-      return const Left("Failed Create Comment Forum");
+      final Uint8List responseList = await streamedResponse.stream.toBytes();
+      final String responseData = String.fromCharCodes(responseList);
+
+      if (statusCode == 201) {
+        return Right(AddCommentByIdForumResponse.fromMap(jsonDecode(responseData)));
+      } else {
+        return const Left("Failed Create Comment Forum");
+      }
+
+    } on SocketException {
+      return const Left("No Internet Connection");
+    } catch (e) {
+      // print(e.toString());
+      return Left("An error occurred: ${e.toString()}");
     }
   }
 
   // Get Comment Forum By Id
-  Future<Either<String, GetCommentForumResponse>> getCommentByIdForum(
-      String id
+  Future<Either<String, GetCommentByIdForumResponse>> getCommentByIdForum(
+      int id
   ) async {
-    final authData = await AuthLocalDatasource().getAuthData();
 
-    final response = await http.get(
-      Uri.parse("http://192.168.0.171:8000/api/post/comments/$id"),
-      headers: <String, String> {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${authData.accessToken}',
+    try {
+      final authData = await AuthLocalDatasource().getAuthData();
+
+      final response = await http.get(
+          Uri.parse("${Variables.baseUrl}/api/post/comments/${id.toString()}"),
+          headers: <String, String> {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ${authData!.accessToken}',
+          }
+      );
+
+      if (response.statusCode == 200) {
+        return Right(GetCommentByIdForumResponse.fromMap(jsonDecode(response.body)));
+      } else {
+        return const Left("Gagal Memunculkan Comment");
       }
-    );
 
-    if (response.statusCode == 200) {
-      return Right(GetCommentForumResponse.fromJson(response.body));
-    } else {
-      return const Left("Gagal Memunculkan Comment");
+    } on SocketException {
+      return const Left("No Internet Connection");
+    } catch (e) {
+      return Left("An error occurred: ${e.toString()}");
+    }
+  }
+
+  // Like And Dislike
+  Future<Either<String, dynamic>> likeAndDislike(
+      int id
+  ) async {
+
+    try {
+      final authData = await AuthLocalDatasource().getAuthData();
+      
+      final response = await http.post(
+        Uri.parse("${Variables.baseUrl}/api/post/like/$id"),
+        headers: <String, String> {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${authData!.accessToken}',
+        }
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody = json.decode(response.body);
+        if (responseBody['liked'] == true) {
+          return Right(responseBody['message']);
+        } else {
+          return Left(responseBody['message'] ?? "Failed to like/dislike postingan");
+        }
+      } else {
+        return Left("Failed to like/dislike postingan. Status code: ${response.statusCode}");
+      }
+    } on SocketException {
+      return const Left("No Internet Connection");
+    } catch (e) {
+      return Left("An error occurred: ${e.toString()}");
     }
   }
 }

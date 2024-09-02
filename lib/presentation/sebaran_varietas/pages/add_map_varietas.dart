@@ -104,7 +104,7 @@ class _AddMapVarietasState extends State<AddMapVarietas> {
     _markers.add(marker);
     
     _mapController.animateCamera(
-      CameraUpdate.newLatLngZoom(LatLng(lat, lon), 15),
+      CameraUpdate.newLatLngZoom(LatLng(lat, lon), 18),
     );
     
     await _getPosition(lat: lat, lon: lon);
@@ -135,8 +135,12 @@ class _AddMapVarietasState extends State<AddMapVarietas> {
               GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: LatLng(widget.lat, widget.lon),
-                  zoom: 15,
+                  zoom: 18,
                 ),
+                mapType: MapType.satellite,
+                myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
+                mapToolbarEnabled: false,
                 markers: _markers,
                 onMapCreated: (controller) {
                   mapController(controller);
@@ -168,6 +172,55 @@ class _AddMapVarietasState extends State<AddMapVarietas> {
                     enabled: false,
                     maxLines: 2,
                   ),
+                ),
+              ),
+              Positioned(
+                top: 120,
+                right: 20,
+                child: Column(
+                  children: [
+                    FloatingActionButton.small(
+                      heroTag: "zoom-in",
+                      onPressed: () => _mapController.animateCamera(CameraUpdate.zoomIn()),
+                      backgroundColor: AppColors.secondary,
+                      child: const Icon(Icons.add, color: AppColors.white),
+                    ),
+                    FloatingActionButton.small(
+                      heroTag: "zoom-out",
+                      onPressed: () => _mapController.animateCamera(CameraUpdate.zoomOut()),
+                      backgroundColor: AppColors.secondary,
+                      child: const Icon(Icons.remove, color: AppColors.white),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 24,
+                right: 16,
+                child: Column(
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () async {
+                        final Location location = Location();
+                        final currentLocation = await location.getLocation();
+
+                        setNewMarker(
+                          lat: currentLocation.latitude!,
+                          lon: currentLocation.longitude!,
+                        );
+                      },
+                      backgroundColor: AppColors.secondary,
+                      child: const Icon(Icons.my_location, color: AppColors.white),
+                    ),
+                    const SizedBox(height: 24),
+                    FloatingActionButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      backgroundColor: AppColors.primary,
+                      child: const Icon(Icons.check, color: AppColors.white),
+                    ),
+                  ],
                 ),
               ),
             ],

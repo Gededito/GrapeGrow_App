@@ -42,7 +42,7 @@ class _HamaPageState extends State<HamaPage> {
       body: BlocBuilder<HamaBloc, HamaState>(
         builder: (context, state) {
           return state.maybeWhen(
-              orElse: () => const Center(child: Text("Terjadi Error")),
+              orElse: () => const Center(child: Text("Tidak Muncul Datanya")),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
@@ -53,9 +53,9 @@ class _HamaPageState extends State<HamaPage> {
                     child: ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: datas.data.length,
+                      itemCount: datas.penyakitAnggur.length,
                       separatorBuilder: (context, index) => const SizedBox(height: 8.0),
-                      itemBuilder: (context, index) => HamaCard(data: datas.data[index]),
+                      itemBuilder: (context, index) => HamaCard(data: datas.penyakitAnggur[index]),
                     ),
                   ),
                 );

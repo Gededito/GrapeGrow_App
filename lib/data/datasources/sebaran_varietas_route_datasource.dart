@@ -6,6 +6,7 @@ import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
 import 'package:grapegrow_apps/data/models/request/sebaran_varietas_request.dart';
 import 'package:grapegrow_apps/data/models/responses/add_sebaran_varietas_response.dart';
 import 'package:grapegrow_apps/data/models/responses/list_sebaran_varietas_response.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:http/http.dart' as http;
 
 class SebaranVarietasRouteDatasource {
@@ -15,7 +16,7 @@ class SebaranVarietasRouteDatasource {
     SebaranVarietasRequest sebaranVarietasRequest
   ) async {
     final authData = await AuthLocalDatasource().getAuthData();
-    final uri = Uri.parse('http://192.168.0.171:8000/api/sebaran/varietas/isi');
+    final uri = Uri.parse('${Variables.baseUrl}/api/sebaran_varietas/add');
     var request = http.MultipartRequest('POST',  uri);
 
     final fileName = sebaranVarietasRequest.gambar;
@@ -28,7 +29,7 @@ class SebaranVarietasRouteDatasource {
 
     final Map<String, String> headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer ${authData.accessToken}',
+      'Authorization': 'Bearer ${authData!.accessToken}',
     };
 
     final Map<String, String> fields = sebaranVarietasRequest.toJson();
@@ -63,10 +64,10 @@ class SebaranVarietasRouteDatasource {
     final authData = await AuthLocalDatasource().getAuthData();
 
     final response = await http.get(
-      Uri.parse("http://192.168.0.171:8000/api/sebaran/varietas"),
+      Uri.parse("${Variables.baseUrl}/api/sebaran_varietas"),
       headers: <String, String> {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${authData.accessToken}',
+        'Authorization': 'Bearer ${authData!.accessToken}',
       }
     );
 

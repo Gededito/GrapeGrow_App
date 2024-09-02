@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:grapegrow_apps/data/models/responses/add_sebaran_varietas_response.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -86,7 +87,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
                 Radius.circular(12.0),
               ),
               child: CachedNetworkImage(
-                imageUrl:'http://192.168.0.171:8000/storage/${widget.data.gambar}',
+                imageUrl:'${Variables.baseUrl}/storage/${widget.data.gambar}',
                 placeholder: (context, url) => SizedBox(
                   height: 250,
                   width: context.deviceWidth,
@@ -127,11 +128,13 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.data.user!.name,
+                          widget.data.user!.name.length > 20
+                          ? '${widget.data.user!.name.substring(0, 20)}...'
+                          : widget.data.user!.name,
                           style: TextStyle(
                             fontFamily: fontPoppins,
                             fontWeight: FontWeight.w500,
-                            fontSize: 18,
+                            fontSize: 16,
                             overflow: TextOverflow.ellipsis,
                           ),
                           maxLines: 1,
@@ -190,7 +193,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
                   widget.data.jumlahTanaman.toString(),
                   style: TextStyle(
                     fontFamily: fontPoppins,
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -213,7 +216,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
                   widget.data.deskripsi,
                   style: TextStyle(
                     fontFamily: fontPoppins,
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -236,7 +239,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
                   widget.data.jualBibit == true ? "Iya" : "Tidak",
                   style: TextStyle(
                     fontFamily: fontPoppins,
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
               ],

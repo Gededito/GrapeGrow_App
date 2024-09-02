@@ -48,12 +48,12 @@ class User {
   String toJson() => json.encode(toMap());
 
   factory User.fromMap(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    phone: json["phone"],
+    id: json["id"] ?? 0,
+    name: json["name"] ?? "",
+    email: json["email"] ?? "",
+    phone: json["phone"] ?? "",
     roles: json["roles"] ?? "-",
-    profilePhoto: json["profile_photo"] ?? "-"
+    profilePhoto: json["profile_photo"] ?? ""
   );
 
   Map<String, dynamic> toMap() => {

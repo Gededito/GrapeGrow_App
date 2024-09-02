@@ -9,6 +9,63 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsCuacaGen {
+  const $AssetsCuacaGen();
+
+  /// File path: assets/cuaca/angin_kencang.png
+  AssetGenImage get anginKencang =>
+      const AssetGenImage('assets/cuaca/angin_kencang.png');
+
+  /// File path: assets/cuaca/badai.png
+  AssetGenImage get badai => const AssetGenImage('assets/cuaca/badai.png');
+
+  /// File path: assets/cuaca/berawan.png
+  AssetGenImage get berawan => const AssetGenImage('assets/cuaca/berawan.png');
+
+  /// File path: assets/cuaca/berkabut.png
+  AssetGenImage get berkabut =>
+      const AssetGenImage('assets/cuaca/berkabut.png');
+
+  /// File path: assets/cuaca/berkabut2.png
+  AssetGenImage get berkabut2 =>
+      const AssetGenImage('assets/cuaca/berkabut2.png');
+
+  /// File path: assets/cuaca/hujan.png
+  AssetGenImage get hujan => const AssetGenImage('assets/cuaca/hujan.png');
+
+  /// File path: assets/cuaca/hujan_2.png
+  AssetGenImage get hujan2 => const AssetGenImage('assets/cuaca/hujan_2.png');
+
+  /// File path: assets/cuaca/panas.png
+  AssetGenImage get panas => const AssetGenImage('assets/cuaca/panas.png');
+
+  /// File path: assets/cuaca/salju.png
+  AssetGenImage get salju => const AssetGenImage('assets/cuaca/salju.png');
+
+  /// File path: assets/cuaca/suhu_kelembapan.png
+  AssetGenImage get suhuKelembapan =>
+      const AssetGenImage('assets/cuaca/suhu_kelembapan.png');
+
+  /// File path: assets/cuaca/suhu_panas.png
+  AssetGenImage get suhuPanas =>
+      const AssetGenImage('assets/cuaca/suhu_panas.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        anginKencang,
+        badai,
+        berawan,
+        berkabut,
+        berkabut2,
+        hujan,
+        hujan2,
+        panas,
+        salju,
+        suhuKelembapan,
+        suhuPanas
+      ];
+}
+
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
@@ -114,6 +171,7 @@ class $AssetsMapsGen {
 class Assets {
   Assets._();
 
+  static const $AssetsCuacaGen cuaca = $AssetsCuacaGen();
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();

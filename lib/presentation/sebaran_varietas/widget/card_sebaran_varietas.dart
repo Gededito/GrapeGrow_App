@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:grapegrow_apps/data/models/responses/add_sebaran_varietas_response.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/detail_sebaran_varietas.dart';
 
@@ -72,7 +73,7 @@ class _CardSebaranVarietasState extends State<CardSebaranVarietas> {
                   Radius.circular(12.0),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: 'http://192.168.0.171:8000/storage/${widget.data.gambar}',
+                  imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
                   placeholder: (context, url) => const SizedBox(
                     width: 100,
                     height: 100,

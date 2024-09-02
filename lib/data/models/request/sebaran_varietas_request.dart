@@ -41,30 +41,4 @@ class SebaranVarietasRequest {
   void setJualBibit(bool value) {
     jualBibit = value ? 1 : 0;
   }
-
-  // factory SebaranVarietasRequest.fromJson(String str) =>
-  //     SebaranVarietasRequest.fromJson(json.decode(str));
-
-  // String toJson() => json.encode(toMap());
-
-  // factory SebaranVarietasRequest.fromMap(Map<String, dynamic> json) =>
-  //     SebaranVarietasRequest(
-  //       nama: json["nama"],
-  //       deskripsi: json["deskripsi"],
-  //       jumlahTanaman: json["jumlah_tanaman"],
-  //       jualBibit: json["menjual_bibit"] == 1 ? true : false,
-  //       gambar: json["gambar"],
-  //       lat: json["lat"],
-  //       lon: json["lon"],
-  //     );
-
-  // Map<String, dynamic> toMap() => {
-  //   "nama": nama,
-  //   "deskripsi": deskripsi,
-  //   "jumlah_tanaman": jumlahTanaman,
-  //   "menjual_bibit": jualBibit,
-  //   "gambar": gambar,
-  //   "lat": lat,
-  //   "lon": lon
-  // };
 }

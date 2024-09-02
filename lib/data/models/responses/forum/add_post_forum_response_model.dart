@@ -2,75 +2,81 @@ import 'dart:convert';
 
 import 'package:grapegrow_apps/data/models/responses/auth_response_model.dart';
 
-class GetAllPostForumResponse {
+class AddPostForumDiskusiResponse {
   final String status;
-  final List<Post> posts;
+  final String message;
+  final PostForum postForum;
 
-  GetAllPostForumResponse({
+  AddPostForumDiskusiResponse({
     required this.status,
-    required this.posts
+    required this.message,
+    required this.postForum,
   });
 
-  factory GetAllPostForumResponse.fromJson(String str) =>
-      GetAllPostForumResponse.fromMap(json.decode(str));
+  factory AddPostForumDiskusiResponse.fromJson(String str) => AddPostForumDiskusiResponse.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory GetAllPostForumResponse.fromMap(Map<String, dynamic> json) => GetAllPostForumResponse(
+  factory AddPostForumDiskusiResponse.fromMap(Map<String, dynamic> json) => AddPostForumDiskusiResponse(
     status: json["status"],
-    posts: List<Post>.from(json["posts"].map((x) => Post.fromMap(x)))
+    message: json["message"],
+    postForum: PostForum.fromMap(json["post"]),
   );
 
   Map<String, dynamic> toMap() => {
     "status": status,
-    "posts": List<Post>.from(posts.map((x) => x.toMap())),
+    "message": message,
+    "post": postForum.toJson(),
   };
 }
 
-class Post {
+class PostForum {
   final int id;
   final int userId;
   final String content;
   String? gambar;
-  bool? liked;
+  final bool liked;
   final DateTime createdAt;
   final DateTime updatedAt;
   final User user;
 
-  Post({
+  PostForum({
     required this.id,
     required this.userId,
     required this.content,
     this.gambar,
-    this.liked,
+    required this.liked,
     required this.createdAt,
     required this.updatedAt,
     required this.user,
   });
 
-  factory Post.fromJson(String str) => Post.fromMap(json.decode(str));
+  factory PostForum.fromJson(String str) => PostForum.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Post.fromMap(Map<String, dynamic> json) => Post(
+  factory PostForum.fromMap(Map<String, dynamic> json) =>
+    PostForum(
     id: json["id"],
     userId: json["user_id"],
-    content: json["content"] ?? "",
+    content: json["content"],
     gambar: json["gambar"] ?? "",
     liked: json["liked"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    user: User.fromMap(json["user"]),
+    user: json["user"] != null
+        ? User.fromMap(json["user"] as Map<String, dynamic>)
+        : User.fromMap({}),
   );
 
   Map<String, dynamic> toMap() => {
     "id": id,
     "user_id": userId,
     "content": content,
-    "gambar": gambar,
+    "gambar": gambar ?? "",
     "liked": liked,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
     "user": user.toMap(),
   };
 }

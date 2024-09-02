@@ -62,7 +62,7 @@ class _AddForumState extends State<AddForum> {
                 height: 12,
               ),
               ImageInput(
-                label: 'Masukan Gambar',
+                label: 'Masukan Gambar (Opsional)',
                 onImageSelected: (File? file) {
                   imagePost = file;
                 },
@@ -76,7 +76,7 @@ class _AddForumState extends State<AddForum> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            "Create Diskusi Berhasil",
+                            "Create Diskusi Success",
                             style: TextStyle(
                               color: AppColors.white,
                             ),

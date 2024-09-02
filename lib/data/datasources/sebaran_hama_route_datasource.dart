@@ -6,6 +6,7 @@ import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
 import 'package:grapegrow_apps/data/models/request/sebaran_hama_request.dart';
 import 'package:grapegrow_apps/data/models/responses/add_sebaran_hama_response.dart';
 import 'package:grapegrow_apps/data/models/responses/list_sebaran_hama_response.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:http/http.dart' as http;
 
 class SebaranHamaRouteDatasource {
@@ -15,7 +16,7 @@ class SebaranHamaRouteDatasource {
     SebaranHamaRequest sebaranHamaRequest,
   ) async {
     final authData = await AuthLocalDatasource().getAuthData();
-    final uri = Uri.parse("http://192.168.0.171:8000/api/sebaran/hama/tambah");
+    final uri = Uri.parse("${Variables.baseUrl}/api/sebaran_penyakit/add");
     var request = http.MultipartRequest('POST', uri);
 
     final fileName = sebaranHamaRequest.gambar;
@@ -28,7 +29,7 @@ class SebaranHamaRouteDatasource {
   
     final Map<String, String> headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer ${authData.accessToken}',
+      'Authorization': 'Bearer ${authData!.accessToken}',
     };
 
     final Map<String, String> fields = sebaranHamaRequest.toJson();
@@ -54,10 +55,10 @@ class SebaranHamaRouteDatasource {
     final authData = await AuthLocalDatasource().getAuthData();
 
     final response = await http.get(
-      Uri.parse("http://192.168.0.171:8000/api/sebaran/hama"),
+      Uri.parse("${Variables.baseUrl}/api/sebaran_penyakit"),
       headers: <String, String> {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${authData.accessToken}',
+        'Authorization': 'Bearer ${authData!.accessToken}',
       }
     );
 

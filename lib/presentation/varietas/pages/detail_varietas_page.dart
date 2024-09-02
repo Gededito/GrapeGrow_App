@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:grapegrow_apps/data/models/responses/varietas_response_model.dart';
 
 class DetailVarietasPage extends StatelessWidget {
@@ -42,7 +43,7 @@ class DetailVarietasPage extends StatelessWidget {
                 Radius.circular(12.0),
               ),
               child: CachedNetworkImage(
-                imageUrl: 'http://192.168.0.171:8000/storage/${data.gambarVarietas}',
+                imageUrl: '${Variables.baseUrl}/storage/${data.gambarVarietas}',
                 placeholder: (context, url) => SizedBox(
                   height: 300,
                   width: context.deviceWidth,

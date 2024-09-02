@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/data/models/responses/hama_response_model.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 
 class DetailHamaPage extends StatelessWidget {
   final String fontPoppins = 'FontPoppins';
@@ -42,7 +43,7 @@ class DetailHamaPage extends StatelessWidget {
                 Radius.circular(12.0),
               ),
               child: CachedNetworkImage(
-                imageUrl: 'http://192.168.0.171:8000/storage/${data.gambar}',
+                imageUrl: '${Variables.baseUrl}/storage/${data.gambar}',
                 placeholder: (context, url) => SizedBox(
                   height: 300,
                   width: context.deviceWidth,

@@ -315,7 +315,8 @@ mixin _$PostState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(PostForumResponse postForumResponse) success,
+    required TResult Function(AddPostForumDiskusiResponse postForumResponse)
+        success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -323,7 +324,7 @@ mixin _$PostState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(PostForumResponse postForumResponse)? success,
+    TResult? Function(AddPostForumDiskusiResponse postForumResponse)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -331,7 +332,7 @@ mixin _$PostState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(PostForumResponse postForumResponse)? success,
+    TResult Function(AddPostForumDiskusiResponse postForumResponse)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -420,7 +421,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(PostForumResponse postForumResponse) success,
+    required TResult Function(AddPostForumDiskusiResponse postForumResponse)
+        success,
   }) {
     return initial();
   }
@@ -431,7 +433,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(PostForumResponse postForumResponse)? success,
+    TResult? Function(AddPostForumDiskusiResponse postForumResponse)? success,
   }) {
     return initial?.call();
   }
@@ -442,7 +444,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(PostForumResponse postForumResponse)? success,
+    TResult Function(AddPostForumDiskusiResponse postForumResponse)? success,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -534,7 +536,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(PostForumResponse postForumResponse) success,
+    required TResult Function(AddPostForumDiskusiResponse postForumResponse)
+        success,
   }) {
     return loading();
   }
@@ -545,7 +548,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(PostForumResponse postForumResponse)? success,
+    TResult? Function(AddPostForumDiskusiResponse postForumResponse)? success,
   }) {
     return loading?.call();
   }
@@ -556,7 +559,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(PostForumResponse postForumResponse)? success,
+    TResult Function(AddPostForumDiskusiResponse postForumResponse)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -674,7 +677,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(PostForumResponse postForumResponse) success,
+    required TResult Function(AddPostForumDiskusiResponse postForumResponse)
+        success,
   }) {
     return error(message);
   }
@@ -685,7 +689,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(PostForumResponse postForumResponse)? success,
+    TResult? Function(AddPostForumDiskusiResponse postForumResponse)? success,
   }) {
     return error?.call(message);
   }
@@ -696,7 +700,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(PostForumResponse postForumResponse)? success,
+    TResult Function(AddPostForumDiskusiResponse postForumResponse)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -758,7 +762,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({PostForumResponse postForumResponse});
+  $Res call({AddPostForumDiskusiResponse postForumResponse});
 }
 
 /// @nodoc
@@ -778,7 +782,7 @@ class __$$SuccessImplCopyWithImpl<$Res>
       null == postForumResponse
           ? _value.postForumResponse
           : postForumResponse // ignore: cast_nullable_to_non_nullable
-              as PostForumResponse,
+              as AddPostForumDiskusiResponse,
     ));
   }
 }
@@ -789,7 +793,7 @@ class _$SuccessImpl implements _Success {
   const _$SuccessImpl(this.postForumResponse);
 
   @override
-  final PostForumResponse postForumResponse;
+  final AddPostForumDiskusiResponse postForumResponse;
 
   @override
   String toString() {
@@ -820,7 +824,8 @@ class _$SuccessImpl implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(PostForumResponse postForumResponse) success,
+    required TResult Function(AddPostForumDiskusiResponse postForumResponse)
+        success,
   }) {
     return success(postForumResponse);
   }
@@ -831,7 +836,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(PostForumResponse postForumResponse)? success,
+    TResult? Function(AddPostForumDiskusiResponse postForumResponse)? success,
   }) {
     return success?.call(postForumResponse);
   }
@@ -842,7 +847,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(PostForumResponse postForumResponse)? success,
+    TResult Function(AddPostForumDiskusiResponse postForumResponse)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -890,10 +895,10 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements PostState {
-  const factory _Success(final PostForumResponse postForumResponse) =
+  const factory _Success(final AddPostForumDiskusiResponse postForumResponse) =
       _$SuccessImpl;
 
-  PostForumResponse get postForumResponse;
+  AddPostForumDiskusiResponse get postForumResponse;
   @JsonKey(ignore: true)
   _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;

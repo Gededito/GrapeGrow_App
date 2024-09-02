@@ -15,10 +15,14 @@ class AuthLocalDatasource {
   }
 
   // Get Token or User
-  Future<AuthResponseModel> getAuthData() async {
+  Future<AuthResponseModel?> getAuthData() async {
     final pref = await SharedPreferences.getInstance();
     final authData = pref.getString('auth_data');
 
-    return AuthResponseModel.fromJson(authData!);
+    if (authData != null) {
+      return AuthResponseModel.fromJson(authData);
+    } else {
+      return null;
+    }
   }
 }

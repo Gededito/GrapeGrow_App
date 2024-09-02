@@ -19,19 +19,19 @@ mixin _$GetCommentForumIdEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function(String id) getAllCommentById,
+    required TResult Function(int id) getAllCommentById,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function(String id)? getAllCommentById,
+    TResult? Function(int id)? getAllCommentById,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function(String id)? getAllCommentById,
+    TResult Function(int id)? getAllCommentById,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,7 +114,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function(String id) getAllCommentById,
+    required TResult Function(int id) getAllCommentById,
   }) {
     return started();
   }
@@ -123,7 +123,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function(String id)? getAllCommentById,
+    TResult? Function(int id)? getAllCommentById,
   }) {
     return started?.call();
   }
@@ -132,7 +132,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function(String id)? getAllCommentById,
+    TResult Function(int id)? getAllCommentById,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -183,7 +183,7 @@ abstract class _$$GetCommentByIdForumImplCopyWith<$Res> {
           $Res Function(_$GetCommentByIdForumImpl) then) =
       __$$GetCommentByIdForumImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String id});
+  $Res call({int id});
 }
 
 /// @nodoc
@@ -204,7 +204,7 @@ class __$$GetCommentByIdForumImplCopyWithImpl<$Res>
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ));
   }
 }
@@ -215,7 +215,7 @@ class _$GetCommentByIdForumImpl implements _GetCommentByIdForum {
   const _$GetCommentByIdForumImpl(this.id);
 
   @override
-  final String id;
+  final int id;
 
   @override
   String toString() {
@@ -244,7 +244,7 @@ class _$GetCommentByIdForumImpl implements _GetCommentByIdForum {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function(String id) getAllCommentById,
+    required TResult Function(int id) getAllCommentById,
   }) {
     return getAllCommentById(id);
   }
@@ -253,7 +253,7 @@ class _$GetCommentByIdForumImpl implements _GetCommentByIdForum {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function(String id)? getAllCommentById,
+    TResult? Function(int id)? getAllCommentById,
   }) {
     return getAllCommentById?.call(id);
   }
@@ -262,7 +262,7 @@ class _$GetCommentByIdForumImpl implements _GetCommentByIdForum {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function(String id)? getAllCommentById,
+    TResult Function(int id)? getAllCommentById,
     required TResult orElse(),
   }) {
     if (getAllCommentById != null) {
@@ -304,10 +304,9 @@ class _$GetCommentByIdForumImpl implements _GetCommentByIdForum {
 }
 
 abstract class _GetCommentByIdForum implements GetCommentForumIdEvent {
-  const factory _GetCommentByIdForum(final String id) =
-      _$GetCommentByIdForumImpl;
+  const factory _GetCommentByIdForum(final int id) = _$GetCommentByIdForumImpl;
 
-  String get id;
+  int get id;
   @JsonKey(ignore: true)
   _$$GetCommentByIdForumImplCopyWith<_$GetCommentByIdForumImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -320,7 +319,8 @@ mixin _$GetCommentForumIdState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(GetCommentForumResponse getCommentForumResponse)
+    required TResult Function(
+            GetCommentByIdForumResponse getCommentForumResponse)
         success,
   }) =>
       throw _privateConstructorUsedError;
@@ -329,7 +329,8 @@ mixin _$GetCommentForumIdState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult? Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -337,7 +338,8 @@ mixin _$GetCommentForumIdState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -428,7 +430,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(GetCommentForumResponse getCommentForumResponse)
+    required TResult Function(
+            GetCommentByIdForumResponse getCommentForumResponse)
         success,
   }) {
     return initial();
@@ -440,7 +443,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult? Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
   }) {
     return initial?.call();
   }
@@ -451,7 +455,8 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -543,7 +548,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(GetCommentForumResponse getCommentForumResponse)
+    required TResult Function(
+            GetCommentByIdForumResponse getCommentForumResponse)
         success,
   }) {
     return loading();
@@ -555,7 +561,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult? Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
   }) {
     return loading?.call();
   }
@@ -566,7 +573,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -684,7 +692,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(GetCommentForumResponse getCommentForumResponse)
+    required TResult Function(
+            GetCommentByIdForumResponse getCommentForumResponse)
         success,
   }) {
     return error(message);
@@ -696,7 +705,8 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult? Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
   }) {
     return error?.call(message);
   }
@@ -707,7 +717,8 @@ class _$ErrorImpl implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -769,7 +780,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({GetCommentForumResponse getCommentForumResponse});
+  $Res call({GetCommentByIdForumResponse getCommentForumResponse});
 }
 
 /// @nodoc
@@ -789,7 +800,7 @@ class __$$SuccessImplCopyWithImpl<$Res>
       null == getCommentForumResponse
           ? _value.getCommentForumResponse
           : getCommentForumResponse // ignore: cast_nullable_to_non_nullable
-              as GetCommentForumResponse,
+              as GetCommentByIdForumResponse,
     ));
   }
 }
@@ -800,7 +811,7 @@ class _$SuccessImpl implements _Success {
   const _$SuccessImpl(this.getCommentForumResponse);
 
   @override
-  final GetCommentForumResponse getCommentForumResponse;
+  final GetCommentByIdForumResponse getCommentForumResponse;
 
   @override
   String toString() {
@@ -832,7 +843,8 @@ class _$SuccessImpl implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(GetCommentForumResponse getCommentForumResponse)
+    required TResult Function(
+            GetCommentByIdForumResponse getCommentForumResponse)
         success,
   }) {
     return success(getCommentForumResponse);
@@ -844,7 +856,8 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult? Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
   }) {
     return success?.call(getCommentForumResponse);
   }
@@ -855,7 +868,8 @@ class _$SuccessImpl implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(GetCommentForumResponse getCommentForumResponse)? success,
+    TResult Function(GetCommentByIdForumResponse getCommentForumResponse)?
+        success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -904,9 +918,10 @@ class _$SuccessImpl implements _Success {
 
 abstract class _Success implements GetCommentForumIdState {
   const factory _Success(
-      final GetCommentForumResponse getCommentForumResponse) = _$SuccessImpl;
+          final GetCommentByIdForumResponse getCommentForumResponse) =
+      _$SuccessImpl;
 
-  GetCommentForumResponse get getCommentForumResponse;
+  GetCommentByIdForumResponse get getCommentForumResponse;
   @JsonKey(ignore: true)
   _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;

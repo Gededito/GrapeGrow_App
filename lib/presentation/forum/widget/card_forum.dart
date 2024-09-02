@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/core/constants/constant.dart';
-import 'package:grapegrow_apps/data/models/responses/get_post_forum_response_model.dart';
+import 'package:grapegrow_apps/data/datasources/forum_remote_datasource.dart';
+import 'package:grapegrow_apps/data/models/responses/forum/add_post_forum_response_model.dart';
 import 'package:grapegrow_apps/presentation/forum/pages/comment_page.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 
 class CardForum extends StatefulWidget {
-  final Post data;
+  final PostForum data;
 
   const CardForum({
     super.key,
@@ -20,7 +22,25 @@ class CardForum extends StatefulWidget {
 }
 
 class _CardForumState extends State<CardForum> {
+  bool likedForum = false;
+  bool isLoading = false;
+  int likedCount = 0;
   final String fontPoppins = 'FontPoppins';
+
+  Future<void> _toggleLike() async {
+    final result = await ForumRemoteDatasource().likeAndDislike(widget.data.id);
+
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+        if (result.isRight()) {
+          likedForum = !likedForum;
+
+          likedCount = likedForum ? likedCount + 1 : (likedCount > 0 ? likedCount - 1 : 0);
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,23 +104,37 @@ class _CardForumState extends State<CardForum> {
             ],
           ),
           const SizedBox(height: 12.0),
-          if (widget.data.gambar!.isNotEmpty) ...[
-            Center(
-              child: CachedNetworkImage(
-                imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
-                placeholder: (context, url) => const SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: Center(
-                    child: CircularProgressIndicator(),
+          if (widget.data.gambar!.isNotEmpty && widget.data.gambar != null) ...[
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    child: PhotoView(
+                      imageProvider: NetworkImage(
+                          '${Variables.baseUrl}/storage/${widget.data.gambar}'
+                      ),
+                    ),
                   ),
+                );
+              },
+              child: Center(
+                child: CachedNetworkImage(
+                  imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
+                  placeholder: (context, url) => const SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) {
+                    return const Icon(Icons.error);
+                  },
+                  width: context.deviceWidth,
+                  height: 150,
+                  fit: BoxFit.fitWidth,
                 ),
-                errorWidget: (context, url, error) {
-                  return const Icon(Icons.error);
-                },
-                width: context.deviceWidth,
-                height: 150,
-                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(height: 12.0),
@@ -117,16 +151,18 @@ class _CardForumState extends State<CardForum> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () {},
-                icon: const Icon(
+                onPressed: _toggleLike,
+                icon: Icon(
                   Icons.thumb_up,
-                  color: AppColors.grey,
+                  color: likedForum ? Colors.red : Colors.grey,
                 ),
               ),
+              const SizedBox(width: 4.0),
+              Text('$likedCount Menyukai'),
               const SizedBox(width: 8.0),
               IconButton(
                 onPressed: () {
-                  context.push(CommentPage(post: widget.data));
+                  context.push(CommentPage(data: widget.data));
                 },
                 icon: const Icon(
                   Icons.message,

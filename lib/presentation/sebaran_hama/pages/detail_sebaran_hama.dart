@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/data/models/responses/add_sebaran_hama_response.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:intl/intl.dart';
 
 class DetailSebaranHama extends StatefulWidget {
@@ -70,7 +71,7 @@ class _DetailSebaranHamaState extends State<DetailSebaranHama> {
                 Radius.circular(12.0),
               ),
               child: CachedNetworkImage(
-                imageUrl: 'http://192.168.0.171:8000/storage/${widget.data.gambar}',
+                imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
                 placeholder: (context, url) => SizedBox(
                   height: 250,
                   width: context.deviceWidth,
@@ -111,7 +112,9 @@ class _DetailSebaranHamaState extends State<DetailSebaranHama> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.data.user!.name,
+                          widget.data.user!.name.length > 20
+                          ? '${widget.data.user!.name.substring(0, 20)}...'
+                          : widget.data.user!.name,
                           style: TextStyle(
                             fontFamily: fontPoppins,
                             fontWeight: FontWeight.w500,

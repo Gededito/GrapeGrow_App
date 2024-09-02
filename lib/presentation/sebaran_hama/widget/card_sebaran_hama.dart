@@ -5,6 +5,7 @@ import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/data/models/responses/add_sebaran_hama_response.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/pages/detail_sebaran_hama.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 
 class CardSebaranHama extends StatefulWidget {
   final SebaranHama data;
@@ -72,7 +73,7 @@ class _CardSebaranHamaState extends State<CardSebaranHama> {
                   Radius.circular(12.0),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: 'http://192.168.0.171:8000/storage/${widget.data.gambar}',
+                  imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
                   placeholder: (context, url) => const SizedBox(
                     width: 100,
                     height: 100,

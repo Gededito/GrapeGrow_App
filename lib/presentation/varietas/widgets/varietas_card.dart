@@ -4,6 +4,7 @@ import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/data/models/responses/varietas_response_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:grapegrow_apps/presentation/varietas/pages/detail_varietas_page.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 
 class VarietasCard extends StatelessWidget {
   final String fontPoppins = 'FontPoppins';
@@ -49,7 +50,7 @@ class VarietasCard extends StatelessWidget {
                   Radius.circular(12.0),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: 'http://192.168.0.171:8000/storage/${data.gambarVarietas}',
+                  imageUrl: '${Variables.baseUrl}/storage/${data.gambarVarietas}',
                   placeholder: (context, url) => const SizedBox(
                       width: 100,
                       height: 100,

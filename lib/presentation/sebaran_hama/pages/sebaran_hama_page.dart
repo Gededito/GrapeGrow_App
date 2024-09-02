@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
+import 'package:grapegrow_apps/data/models/maps/map_model.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/add_map_hama/add_map_hama_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/all_sebaran_hama/all_sebaran_hama_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/pages/map_sebaran_hama.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/widget/card_sebaran_hama.dart';
 
 class SebaranHamaPage extends StatefulWidget {
-
   const SebaranHamaPage({super.key});
 
   @override
@@ -16,11 +17,13 @@ class SebaranHamaPage extends StatefulWidget {
 
 class _SebaranHamaPageState extends State<SebaranHamaPage> {
   final String fontPoppins = 'FontPoppins';
+  MapModel? mapModel;
 
   @override
   void initState() {
     super.initState();
     context.read<AllSebaranHamaBloc>().add(const AllSebaranHamaEvent.getAllSebaran());
+    context.read<AddMapHamaBloc>().add(const AddMapHamaEvent.getCurrentPosition());
   }
 
   @override
@@ -68,16 +71,38 @@ class _SebaranHamaPageState extends State<SebaranHamaPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push(const MapSebaranHama());
-        },
-        backgroundColor: AppColors.white,
-        child: const Icon(
-          Icons.location_on_outlined,
-          size: 30,
-          color: AppColors.primary,
-        ),
+      floatingActionButton: BlocBuilder<AddMapHamaBloc, AddMapHamaState>(
+        builder: (context, state) {
+          return state.maybeMap(
+            orElse: () => const CircularProgressIndicator(),
+            loaded: (data) {
+              mapModel = data.data;
+
+              return FloatingActionButton.extended(
+                heroTag: "Map Sebaran",
+                onPressed: () {
+                  context.push(MapSebaranHama(
+                    lat: data.data.latLng.latitude,
+                    lon: data.data.latLng.longitude,
+                  ));
+                },
+                backgroundColor: AppColors.white,
+                icon: const Icon(
+                  Icons.location_on_rounded,
+                  size: 30,
+                  color: AppColors.primary,
+                ),
+                label: Text(
+                  "Map Sebaran",
+                  style: TextStyle(
+                    fontFamily: fontPoppins,
+                    color: AppColors.primary,
+                  ),
+                ),
+              );
+            }
+          );
+        }
       ),
     );
   }

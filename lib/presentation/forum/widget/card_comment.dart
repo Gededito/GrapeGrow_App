@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/core/constants/constant.dart';
-import 'package:grapegrow_apps/data/models/responses/comment_id_forum_response_model.dart';
+import 'package:grapegrow_apps/data/models/responses/forum/add_comment_forum_response.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 
 class CardComment extends StatefulWidget {
-  final Comment data;
+  final CommentForum data;
 
   const CardComment({
     super.key,
@@ -83,23 +84,37 @@ class _CardCommentState extends State<CardComment> {
             ],
           ),
           const SizedBox(height: 8.0),
-          if (widget.data.gambar!.isNotEmpty) ...[
-            Center(
-              child: CachedNetworkImage(
-                imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
-                placeholder: (context, url) => const SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: Center(
-                    child: CircularProgressIndicator(),
+          if (widget.data.gambar.isNotEmpty) ...[
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    child: PhotoView(
+                      imageProvider: NetworkImage(
+                        '${Variables.baseUrl}/storage/${widget.data.gambar}',
+                      ),
+                    ),
+                  )
+                );
+              },
+              child: Center(
+                child: CachedNetworkImage(
+                  imageUrl: '${Variables.baseUrl}/storage/${widget.data.gambar}',
+                  placeholder: (context, url) => const SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
+                  errorWidget: (context, url, error) {
+                    return const Icon(Icons.error);
+                  },
+                  width: context.deviceWidth,
+                  height: 150,
+                  fit: BoxFit.fitWidth,
                 ),
-                errorWidget: (context, url, error) {
-                  return const Icon(Icons.error);
-                },
-                width: context.deviceWidth,
-                height: 150,
-                fit: BoxFit.fill,
               ),
             ),
             const SizedBox(height: 12.0),

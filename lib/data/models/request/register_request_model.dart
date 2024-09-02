@@ -1,20 +1,19 @@
 import 'dart:convert';
+import 'dart:io';
 
 class RegisterRequestModel {
   final String name;
   final String email;
   final String phone;
   final String password;
-  // final String? profilePhoto;
-  // final List<int>? bytes;
+  final File gambar;
 
   RegisterRequestModel({
     required this.name,
     required this.email,
     required this.phone,
     required this.password,
-    // this.profilePhoto,
-    // this.bytes,
+    required this.gambar
   });
 
   factory RegisterRequestModel.fromJson(String str) =>
@@ -28,8 +27,7 @@ class RegisterRequestModel {
         email: json["email"],
         phone: json["phone"],
         password: json["password"],
-        // profilePhoto: json['profile_photo'] ?? "-",
-        // bytes: List<int>.from(json['bytes'] ?? [])
+        gambar: json['profile_photo'],
       );
 
   Map<String, dynamic> toMap() => {
@@ -37,6 +35,6 @@ class RegisterRequestModel {
     "email": email,
     "phone": phone,
     "password": password,
-    // "profile_photo": profilePhoto,
+    "profile_photo": gambar,
   };
 }

@@ -172,9 +172,7 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                             ));
                             setState(() {});
                           },
-                          child: const FittedBox(
-                            child: Text('Change\nLocation'),
-                          ),
+                          child: const FittedBox(child: Text('Change\nLocation')),
                         ),
                       ),
                     ],
@@ -198,7 +196,7 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                           backgroundColor: AppColors.primary,
                         ),
                       );
-                      context.pushReplacement(const SebaranVarietasPage());
+                      context.push(const SebaranVarietasPage());
                     },
                     error: (message) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -241,7 +239,9 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
               ),
               const SizedBox(height: 12),
               Button.outlined(
-                onPressed: () {},
+                onPressed: () {
+                  context.pushReplacement(const SebaranVarietasPage());
+                },
                 label: 'Batalkan',
               ),
             ],

@@ -18,11 +18,11 @@ class ListSebaranHamaResponse {
 
   factory ListSebaranHamaResponse.fromMap(Map<String, dynamic> json) => ListSebaranHamaResponse(
     status: json["status"],
-    sebaranHama: List<SebaranHama>.from(json["sebaranHama"].map((x) => SebaranHama.fromMap(x)))
+    sebaranHama: List<SebaranHama>.from(json["sebaranPenyakit"].map((x) => SebaranHama.fromMap(x)))
   );
 
   Map<String, dynamic> toMap() => {
     "status": status,
-    "sebaranHama": List<SebaranHama>.from(sebaranHama.map((x) => x.toMap())),
+    "sebaranPenyakit": List<SebaranHama>.from(sebaranHama.map((x) => x.toMap())),
   };
 }

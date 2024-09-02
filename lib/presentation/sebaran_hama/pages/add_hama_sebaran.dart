@@ -102,12 +102,10 @@ class _AddHamaMapSebaranState extends State<AddHamaSebaran> {
               BlocConsumer<AddMapHamaBloc, AddMapHamaState>(
                 listener: (context, state) {
                   state.maybeMap(
-                      orElse: () =>
-                          alamatController.text = "Location Not Found",
+                      orElse: () => alamatController.text = "Location Not Found",
                       loaded: (data) {
                         mapModel = data.data;
-                        alamatController.text =
-                            data.data.address;
+                        alamatController.text = data.data.address;
                       });
                 },
                 builder: (context, state) {
@@ -130,7 +128,7 @@ class _AddHamaMapSebaranState extends State<AddHamaSebaran> {
                             border: OutlineInputBorder(),
                             hintText: "Alamat",
                             contentPadding: EdgeInsets.symmetric(
-                              vertical: 8.0,
+                              vertical: 8,
                               horizontal: 16,
                             ),
                           ),
@@ -147,8 +145,7 @@ class _AddHamaMapSebaranState extends State<AddHamaSebaran> {
                             ));
                             setState(() {});
                           },
-                          child:
-                              const FittedBox(child: Text('Change\nLocation')),
+                          child: const FittedBox(child: Text('Change\nLocation')),
                         ),
                       ),
                     ],

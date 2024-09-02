@@ -19,20 +19,19 @@ mixin _$AddCommentEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function(CommentRequestModel data, String postId)
-        addComment,
+    required TResult Function(CommentRequestModel data, int postId) addComment,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function(CommentRequestModel data, String postId)? addComment,
+    TResult? Function(CommentRequestModel data, int postId)? addComment,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function(CommentRequestModel data, String postId)? addComment,
+    TResult Function(CommentRequestModel data, int postId)? addComment,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,8 +113,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function(CommentRequestModel data, String postId)
-        addComment,
+    required TResult Function(CommentRequestModel data, int postId) addComment,
   }) {
     return started();
   }
@@ -124,7 +122,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function(CommentRequestModel data, String postId)? addComment,
+    TResult? Function(CommentRequestModel data, int postId)? addComment,
   }) {
     return started?.call();
   }
@@ -133,7 +131,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function(CommentRequestModel data, String postId)? addComment,
+    TResult Function(CommentRequestModel data, int postId)? addComment,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -184,7 +182,7 @@ abstract class _$$AddCommentImplCopyWith<$Res> {
           _$AddCommentImpl value, $Res Function(_$AddCommentImpl) then) =
       __$$AddCommentImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({CommentRequestModel data, String postId});
+  $Res call({CommentRequestModel data, int postId});
 }
 
 /// @nodoc
@@ -209,7 +207,7 @@ class __$$AddCommentImplCopyWithImpl<$Res>
       null == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ));
   }
 }
@@ -222,7 +220,7 @@ class _$AddCommentImpl implements _AddComment {
   @override
   final CommentRequestModel data;
   @override
-  final String postId;
+  final int postId;
 
   @override
   String toString() {
@@ -251,8 +249,7 @@ class _$AddCommentImpl implements _AddComment {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function(CommentRequestModel data, String postId)
-        addComment,
+    required TResult Function(CommentRequestModel data, int postId) addComment,
   }) {
     return addComment(data, postId);
   }
@@ -261,7 +258,7 @@ class _$AddCommentImpl implements _AddComment {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function(CommentRequestModel data, String postId)? addComment,
+    TResult? Function(CommentRequestModel data, int postId)? addComment,
   }) {
     return addComment?.call(data, postId);
   }
@@ -270,7 +267,7 @@ class _$AddCommentImpl implements _AddComment {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function(CommentRequestModel data, String postId)? addComment,
+    TResult Function(CommentRequestModel data, int postId)? addComment,
     required TResult orElse(),
   }) {
     if (addComment != null) {
@@ -312,11 +309,11 @@ class _$AddCommentImpl implements _AddComment {
 }
 
 abstract class _AddComment implements AddCommentEvent {
-  const factory _AddComment(
-      final CommentRequestModel data, final String postId) = _$AddCommentImpl;
+  const factory _AddComment(final CommentRequestModel data, final int postId) =
+      _$AddCommentImpl;
 
   CommentRequestModel get data;
-  String get postId;
+  int get postId;
   @JsonKey(ignore: true)
   _$$AddCommentImplCopyWith<_$AddCommentImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -329,7 +326,7 @@ mixin _$AddCommentState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(CommentForumResponse commentForumResponse)
+    required TResult Function(AddCommentByIdForumResponse commentForumResponse)
         success,
   }) =>
       throw _privateConstructorUsedError;
@@ -338,7 +335,8 @@ mixin _$AddCommentState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(CommentForumResponse commentForumResponse)? success,
+    TResult? Function(AddCommentByIdForumResponse commentForumResponse)?
+        success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -346,7 +344,7 @@ mixin _$AddCommentState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(CommentForumResponse commentForumResponse)? success,
+    TResult Function(AddCommentByIdForumResponse commentForumResponse)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -436,7 +434,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(CommentForumResponse commentForumResponse)
+    required TResult Function(AddCommentByIdForumResponse commentForumResponse)
         success,
   }) {
     return initial();
@@ -448,7 +446,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(CommentForumResponse commentForumResponse)? success,
+    TResult? Function(AddCommentByIdForumResponse commentForumResponse)?
+        success,
   }) {
     return initial?.call();
   }
@@ -459,7 +458,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(CommentForumResponse commentForumResponse)? success,
+    TResult Function(AddCommentByIdForumResponse commentForumResponse)? success,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -551,7 +550,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(CommentForumResponse commentForumResponse)
+    required TResult Function(AddCommentByIdForumResponse commentForumResponse)
         success,
   }) {
     return loading();
@@ -563,7 +562,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(CommentForumResponse commentForumResponse)? success,
+    TResult? Function(AddCommentByIdForumResponse commentForumResponse)?
+        success,
   }) {
     return loading?.call();
   }
@@ -574,7 +574,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(CommentForumResponse commentForumResponse)? success,
+    TResult Function(AddCommentByIdForumResponse commentForumResponse)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -692,7 +692,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(CommentForumResponse commentForumResponse)
+    required TResult Function(AddCommentByIdForumResponse commentForumResponse)
         success,
   }) {
     return error(message);
@@ -704,7 +704,8 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(CommentForumResponse commentForumResponse)? success,
+    TResult? Function(AddCommentByIdForumResponse commentForumResponse)?
+        success,
   }) {
     return error?.call(message);
   }
@@ -715,7 +716,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(CommentForumResponse commentForumResponse)? success,
+    TResult Function(AddCommentByIdForumResponse commentForumResponse)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -777,7 +778,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({CommentForumResponse commentForumResponse});
+  $Res call({AddCommentByIdForumResponse commentForumResponse});
 }
 
 /// @nodoc
@@ -797,7 +798,7 @@ class __$$SuccessImplCopyWithImpl<$Res>
       null == commentForumResponse
           ? _value.commentForumResponse
           : commentForumResponse // ignore: cast_nullable_to_non_nullable
-              as CommentForumResponse,
+              as AddCommentByIdForumResponse,
     ));
   }
 }
@@ -808,7 +809,7 @@ class _$SuccessImpl implements _Success {
   const _$SuccessImpl(this.commentForumResponse);
 
   @override
-  final CommentForumResponse commentForumResponse;
+  final AddCommentByIdForumResponse commentForumResponse;
 
   @override
   String toString() {
@@ -839,7 +840,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) error,
-    required TResult Function(CommentForumResponse commentForumResponse)
+    required TResult Function(AddCommentByIdForumResponse commentForumResponse)
         success,
   }) {
     return success(commentForumResponse);
@@ -851,7 +852,8 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? error,
-    TResult? Function(CommentForumResponse commentForumResponse)? success,
+    TResult? Function(AddCommentByIdForumResponse commentForumResponse)?
+        success,
   }) {
     return success?.call(commentForumResponse);
   }
@@ -862,7 +864,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? error,
-    TResult Function(CommentForumResponse commentForumResponse)? success,
+    TResult Function(AddCommentByIdForumResponse commentForumResponse)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -910,10 +912,10 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements AddCommentState {
-  const factory _Success(final CommentForumResponse commentForumResponse) =
-      _$SuccessImpl;
+  const factory _Success(
+      final AddCommentByIdForumResponse commentForumResponse) = _$SuccessImpl;
 
-  CommentForumResponse get commentForumResponse;
+  AddCommentByIdForumResponse get commentForumResponse;
   @JsonKey(ignore: true)
   _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;

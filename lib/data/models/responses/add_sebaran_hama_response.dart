@@ -20,13 +20,13 @@ class AddSebaranHamaResponse {
   factory AddSebaranHamaResponse.fromMap(Map<String, dynamic> json) => AddSebaranHamaResponse(
     status: json["status"],
     message: json["message"],
-    sebaranHama: SebaranHama.fromMap(json["sebaranHama"]),
+    sebaranHama: SebaranHama.fromMap(json["sebaranPenyakit"]),
   );
 
   Map<String, dynamic> toMap() => {
     "status": status,
     "message": message,
-    "sebaranHama": sebaranHama.toJson(),
+    "sebaranPenyakit": sebaranHama.toMap(),
   };
 }
 

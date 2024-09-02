@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
 import 'package:grapegrow_apps/data/models/responses/hama_response_model.dart';
+import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:http/http.dart' as http;
 
 class HamaRemoteDatasource {
@@ -10,10 +11,10 @@ class HamaRemoteDatasource {
     final authData = await AuthLocalDatasource().getAuthData();
     
     final response = await http.get(
-      Uri.parse('http://192.168.0.171:8000/api/hama'),
+      Uri.parse('${Variables.baseUrl}/api/penyakit'),
       headers: <String, String> {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${authData.accessToken}',
+        'Authorization': 'Bearer ${authData!.accessToken}',
       }
     );
     
@@ -29,10 +30,10 @@ class HamaRemoteDatasource {
     final authData = await AuthLocalDatasource().getAuthData();
     
     final response = await http.get(
-      Uri.parse('http://192.168.0.171:8000/api/hama?id=$id'),
+      Uri.parse('${Variables.baseUrl}/api/penyakit?id=$id'),
       headers: <String, String> {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${authData.accessToken}',
+        'Authorization': 'Bearer ${authData!.accessToken}',
       }
     );
     

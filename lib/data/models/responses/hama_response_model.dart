@@ -2,11 +2,11 @@ import 'dart:convert';
 
 class HamaResponseModel {
   final String status;
-  final List<Hama> data;
+  final List<Hama> penyakitAnggur;
 
   HamaResponseModel({
     required this.status,
-    required this.data,
+    required this.penyakitAnggur,
   });
 
   factory HamaResponseModel.fromJson(String str) =>
@@ -17,12 +17,12 @@ class HamaResponseModel {
   factory HamaResponseModel.fromMap(Map<String, dynamic> json) =>
       HamaResponseModel(
         status: json["status"],
-        data: List<Hama>.from(json["data"].map((x) => Hama.fromMap(x)))
+        penyakitAnggur: List<Hama>.from(json["penyakitAnggur"].map((x) => Hama.fromMap(x)))
       );
 
   Map<String, dynamic> toMap() => {
     "status": status,
-    "data": List<Hama>.from(data.map((x) => x.toMap()))
+    "penyakitAnggur": List<Hama>.from(penyakitAnggur.map((x) => x.toMap()))
   };
 }
 

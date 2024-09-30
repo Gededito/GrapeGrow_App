@@ -39,17 +39,6 @@ class ProfilePage extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50.0),
-                  ),
-                  child: Image.network(
-                    'https://i.pravatar.cc/200',
-                    width: 80.0,
-                    height: 80.0,
-                  ),
-                ),
-                const SizedBox(height: 10),
                 FutureBuilder<AuthResponseModel?>(
                   future: AuthLocalDatasource().getAuthData(),
                   builder: (context, snapshot) {
@@ -84,11 +73,6 @@ class ProfilePage extends StatelessWidget {
                       return const SizedBox();
                     }
                   }
-                ),
-                const SizedBox(height: 12.0),
-                Button.filled(
-                  onPressed: () {},
-                  label: 'Edit Profile',
                 ),
                 const SizedBox(height: 12.0),
                 const Divider(),

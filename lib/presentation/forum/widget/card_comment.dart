@@ -49,17 +49,6 @@ class _CardCommentState extends State<CardComment> {
             children: [
               Row(
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(50.0),
-                    ),
-                    child: Image.network(
-                      'https://i.pravatar.cc/200',
-                      width: 40.0,
-                      height: 40.0,
-                    ),
-                  ),
-                  const SizedBox(width: 8.0),
                   Text(
                     widget.data.user.name,
                     style: TextStyle(

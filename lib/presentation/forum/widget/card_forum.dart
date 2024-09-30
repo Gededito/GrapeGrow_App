@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/core/constants/constant.dart';
-import 'package:grapegrow_apps/data/datasources/forum_remote_datasource.dart';
 import 'package:grapegrow_apps/data/models/responses/forum/add_post_forum_response_model.dart';
 import 'package:grapegrow_apps/presentation/forum/pages/comment_page.dart';
 import 'package:intl/intl.dart';
@@ -27,20 +26,19 @@ class _CardForumState extends State<CardForum> {
   int likedCount = 0;
   final String fontPoppins = 'FontPoppins';
 
-  Future<void> _toggleLike() async {
-    final result = await ForumRemoteDatasource().likeAndDislike(widget.data.id);
-
-    if (mounted) {
-      setState(() {
-        isLoading = true;
-        if (result.isRight()) {
-          likedForum = !likedForum;
-
-          likedCount = likedForum ? likedCount + 1 : (likedCount > 0 ? likedCount - 1 : 0);
-        }
-      });
-    }
-  }
+  // Future<void> _toggleLike() async {
+  //   final result = await ForumRemoteDatasource().likeAndDislike(widget.data.id);
+  //
+  //   if (mounted) {
+  //     setState(() {
+  //       isLoading = true;
+  //       if (result.isRight()) {
+  //         likedForum = !likedForum;
+  //         likedCount = likedForum ? likedCount + 1 : (likedCount > 0 ? likedCount - 1 : 0);
+  //       }
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,17 +64,6 @@ class _CardForumState extends State<CardForum> {
         children: [
           Row(
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(50.0),
-                ),
-                child: Image.network(
-                  'https://i.pravatar.cc/200',
-                  width: 40.0,
-                  height: 40.0,
-                ),
-              ),
-              const SizedBox(width: 8.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -150,16 +137,16 @@ class _CardForumState extends State<CardForum> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              IconButton(
-                onPressed: _toggleLike,
-                icon: Icon(
-                  Icons.thumb_up,
-                  color: likedForum ? Colors.red : Colors.grey,
-                ),
-              ),
-              const SizedBox(width: 4.0),
-              Text('$likedCount Menyukai'),
-              const SizedBox(width: 8.0),
+              // IconButton(
+              //   onPressed: _toggleLike,
+              //   icon: Icon(
+              //     Icons.thumb_up,
+              //     color: likedForum ? Colors.red : Colors.grey,
+              //   ),
+              // ),
+              // const SizedBox(width: 4.0),
+              // Text('$likedCount Menyukai'),
+              // const SizedBox(width: 8.0),
               IconButton(
                 onPressed: () {
                   context.push(CommentPage(data: widget.data));
@@ -169,6 +156,8 @@ class _CardForumState extends State<CardForum> {
                   color: AppColors.grey,
                 ),
               ),
+              const SizedBox(width: 4.0),
+              const Text("Komentar"),
             ],
           ),
         ],

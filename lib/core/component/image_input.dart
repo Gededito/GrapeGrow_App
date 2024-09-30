@@ -7,11 +7,13 @@ import 'package:image_picker/image_picker.dart';
 class ImageInput extends StatefulWidget {
   final String label;
   final Function(File?) onImageSelected;
+  final File? initialImage;
 
   const ImageInput({
     super.key,
     required this.label,
     required this.onImageSelected,
+    this.initialImage,
   });
 
   @override
@@ -32,6 +34,13 @@ class _ImageInputState extends State<ImageInput> {
       });
       widget.onImageSelected(_imageFile);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pickImage;
+    _imageFile = widget.initialImage;
   }
 
   @override

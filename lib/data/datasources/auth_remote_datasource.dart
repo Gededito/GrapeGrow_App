@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:dartz/dartz.dart';
 import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
 import 'package:grapegrow_apps/data/models/request/login_request_model.dart';
@@ -15,7 +14,6 @@ class AuthRemoteDatasource {
   Future<Either<String, AuthResponseModel>> register(
     RegisterRequestModel registerRequestModel
   ) async {
-
     try {
       final uri = Uri.parse('${Variables.baseUrl}/api/register');
       var request = http.MultipartRequest('POST', uri);
@@ -55,7 +53,6 @@ class AuthRemoteDatasource {
         final String errorMessage = errorData['message'] ?? 'Register Gagal';
         return Left(errorMessage);
       }
-
     } catch (e) {
       return Left("Terjadi Kesalahan Saat Melakukan Pendaftaran: $e");
     }
@@ -65,7 +62,6 @@ class AuthRemoteDatasource {
   Future<Either<String, AuthResponseModel>> login(
       LoginRequestModel loginRequest
   ) async {
-
     try {
       final response = await http.post(
         Uri.parse('${Variables.baseUrl}/api/login'),
@@ -82,7 +78,6 @@ class AuthRemoteDatasource {
         final String errorMessage = errorData['message'] ?? 'Login Gagal';
         return Left(errorMessage);
       }
-
     } catch (e) {
       return Left("Terjadi Kesalahan Saat Login: $e");
     }

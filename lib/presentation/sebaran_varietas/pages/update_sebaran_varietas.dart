@@ -1,52 +1,59 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/component/buttons.dart';
 import 'package:grapegrow_apps/core/component/custom_input_field.dart';
 import 'package:grapegrow_apps/core/component/description_input.dart';
-import 'package:grapegrow_apps/core/component/image_input.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/data/models/maps/map_model.dart';
-import 'package:grapegrow_apps/data/models/request/sebaran_varietas_request.dart';
+import 'package:grapegrow_apps/data/models/request/update_sebaran_varietas.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/add_sebaran_varietas_response.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/add_map_varietas/add_map_varietas_bloc.dart';
-import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/add_sebaran_varietas/add_sebaran_varietas_bloc.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/update_sebaran_varietas/update_sebaran_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/add_map_varietas.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/sebaran_varietas_page.dart';
 
-class AddVarietasSebaran extends StatefulWidget {
-  const AddVarietasSebaran({super.key});
+class UpdateVarietasSebaran extends StatefulWidget {
+  final SebaranVarietas data;
+
+  const UpdateVarietasSebaran({
+    super.key,
+    required this.data,
+  });
 
   @override
-  State<AddVarietasSebaran> createState() => _AddVarietasSebaranState();
+  State<UpdateVarietasSebaran> createState() => _UpdateVarietasSebaranState();
 }
 
-class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
+class _UpdateVarietasSebaranState extends State<UpdateVarietasSebaran> {
   final fontPoppins = 'FontPoppins';
 
-  final namaController = TextEditingController();
-  final jumlahTanamanController = TextEditingController();
-  final deskripsiController = TextEditingController();
-  final alamatController = TextEditingController();
+  final _namaController = TextEditingController();
+  final _jumlahTanamanController = TextEditingController();
+  final _deskripsiController = TextEditingController();
+  final _alamatController = TextEditingController();
   bool _selectedValue = false;
-  MapModel? mapModel;
-  File? imageFile;
+  MapModel? _mapModel;
 
   @override
   void dispose() {
-    namaController.dispose();
-    jumlahTanamanController.dispose();
-    deskripsiController.dispose();
-    alamatController.dispose();
+    _namaController.dispose();
+    _jumlahTanamanController.dispose();
+    _deskripsiController.dispose();
+    _alamatController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    context
-        .read<AddMapVarietasBloc>()
-        .add(const AddMapVarietasEvent.getCurrentPosition());
+    context.read<AddMapVarietasBloc>().add(const AddMapVarietasEvent.getCurrentPosition());
+
+    _namaController.text = widget.data.nama;
+    _jumlahTanamanController.text = widget.data.jumlahTanaman;
+    _deskripsiController.text = widget.data.deskripsi;
+    _selectedValue = widget.data.jualBibit == "1";
+    _alamatController.text = getAddressFromLatLong(widget.data.lat, widget.data.lon).toString();
     super.initState();
   }
 
@@ -55,7 +62,7 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tambahkan Varietas Di Map',
+          'Update Data Sebaran Varietas',
           style: TextStyle(
             fontSize: 16,
             fontFamily: fontPoppins,
@@ -74,21 +81,21 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
             children: [
               CustomInputField(
                 label: 'Varietas Anggur ?',
-                controller: namaController,
+                controller: _namaController,
                 toggleObscureText: null,
-                labelText: 'Nama varietas anggur',
+                labelText: 'Nama Varietas Anggur',
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               CustomInputField(
                 label: 'Jumlah Pohon Anggur ?',
-                controller: jumlahTanamanController,
+                controller: _jumlahTanamanController,
                 toggleObscureText: null,
                 labelText: 'Jumlah Pohon Anggur',
                 textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number
+                keyboardType: TextInputType.number,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: 'Apakah Jual Bibit?'),
                 value: _selectedValue ? 'Iya' : 'Tidak',
@@ -108,23 +115,16 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                   return null;
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               DescriptionInput(
                 label: 'Tuliskan Deskripsi',
-                controller: deskripsiController,
+                controller: _deskripsiController,
               ),
-              const SizedBox(height: 12),
-              ImageInput(
-                label: 'Masukan Gambar',
-                onImageSelected: (File? file) {
-                  imageFile = file;
-                },
-              ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Alamat",
+                  'Alamat',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -132,16 +132,16 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               BlocConsumer<AddMapVarietasBloc, AddMapVarietasState>(
                 listener: (context, state) {
                   state.maybeMap(
-                      orElse: () =>
-                          alamatController.text = "Location Not Found",
-                      loaded: (data) {
-                        mapModel = data.data;
-                        alamatController.text = data.data.address;
-                      });
+                    orElse: () => _alamatController,
+                    loaded: (data) {
+                      _mapModel = data.data;
+                      _alamatController.text = data.data.address;
+                    }
+                  );
                 },
                 builder: (context, state) {
                   state.maybeMap(
@@ -150,14 +150,14 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    },
+                    }
                   );
                   return Row(
                     children: [
                       Expanded(
                         flex: 4,
                         child: TextField(
-                          controller: alamatController,
+                          controller: _alamatController,
                           maxLines: 2,
                           enabled: false,
                           decoration: const InputDecoration(
@@ -166,19 +166,21 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                             contentPadding: EdgeInsets.symmetric(
                               vertical: 8,
                               horizontal: 16,
-                            ),
+                            )
                           ),
                         ),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 4.0),
                       Expanded(
                         flex: 2,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await context.push(AddMapVarietas(
-                              lat: mapModel!.latLng.latitude,
-                              lon: mapModel!.latLng.longitude,
-                            ));
+                            await context.push(
+                              AddMapVarietas(
+                                lat: _mapModel!.latLng.latitude,
+                                lon: _mapModel!.latLng.longitude,
+                              ),
+                            );
                             setState(() {});
                           },
                           child: const FittedBox(child: Text('Cari\nLocation')),
@@ -186,10 +188,10 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                       ),
                     ],
                   );
-                },
+                }
               ),
-              const SizedBox(height: 40),
-              BlocConsumer<AddSebaranVarietasBloc, AddSebaranVarietasState>(
+              const SizedBox(height: 12.0),
+              BlocConsumer<UpdateSebaranVarietasBloc, UpdateSebaranVarietasState>(
                 listener: (context, state) {
                   state.maybeWhen(
                     orElse: () {},
@@ -197,7 +199,7 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            "Menambahkan Sebaran Varietas Berhasil",
+                            "Memperbarui Data Sebaran Berhasil",
                             style: TextStyle(
                               color: AppColors.white,
                             ),
@@ -212,7 +214,7 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                         SnackBar(
                           content: Text(message),
                           backgroundColor: Colors.redAccent,
-                        )
+                        ),
                       );
                     }
                   );
@@ -222,41 +224,53 @@ class _AddVarietasSebaranState extends State<AddVarietasSebaran> {
                     orElse: () {
                       return Button.filled(
                         onPressed: () {
-                          final addVarietas = SebaranVarietasRequest(
-                            nama: namaController.text,
-                            deskripsi: deskripsiController.text,
-                            jumlahTanaman: jumlahTanamanController.text,
-                            lat: mapModel!.latLng.latitude,
-                            lon: mapModel!.latLng.longitude,
-                            gambar: imageFile!,
+                          final updateVarietasRequest = UpdateSebaranVarietas(
+                            nama: _namaController.text,
+                            deskripsi: _deskripsiController.text,
+                            jumlahTanaman: _jumlahTanamanController.text,
+                            lat: _mapModel!.latLng.latitude,
+                            lon: _mapModel!.latLng.longitude,
                           );
 
-                          addVarietas.setJualBibit(_selectedValue);
+                          updateVarietasRequest.setJualBibit(_selectedValue);
 
                           context
-                            .read<AddSebaranVarietasBloc>()
-                            .add(AddSebaranVarietasEvent.addSebaranVarietas(addVarietas));
+                              .read<UpdateSebaranVarietasBloc>()
+                              .add(UpdateSebaranVarietasEvent.updateSebaran(updateVarietasRequest, widget.data.id));
                         },
-                        label: "Tambahkan",
+                        label: "Update",
                       );
                     },
-                    loading: () =>const Center(
+                    loading: () => const Center(
                       child: CircularProgressIndicator(),
-                    ),
+                    )
                   );
                 },
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               Button.outlined(
                 onPressed: () {
                   context.pushReplacement(const SebaranVarietasPage());
                 },
-                label: 'Batalkan',
+                label: "Batalkan",
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> getAddressFromLatLong(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        String address = '${placemark.street}, ${placemark.subLocality}, ${placemark.postalCode}, ${placemark.country}';
+        _alamatController.text = address;
+      }
+    } catch (e) {
+      print('Error getting address: $e');
+    }
   }
 }

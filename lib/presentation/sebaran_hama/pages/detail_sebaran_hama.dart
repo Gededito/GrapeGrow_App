@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/data/models/responses/add_sebaran_hama_response.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/add_sebaran_hama_response.dart';
 import 'package:grapegrow_apps/core/constants/constant.dart';
 import 'package:intl/intl.dart';
 
@@ -63,7 +63,7 @@ class _DetailSebaranHamaState extends State<DetailSebaranHama> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
             ClipRRect(
@@ -155,7 +155,7 @@ class _DetailSebaranHamaState extends State<DetailSebaranHama> {
               widget.data.nama,
               style: TextStyle(
                 fontFamily: fontPoppins,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

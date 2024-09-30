@@ -27,9 +27,13 @@ import 'package:grapegrow_apps/presentation/profile/profile_page.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/add_map_hama/add_map_hama_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/add_sebaran_hama/add_sebaran_hama_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/all_sebaran_hama/all_sebaran_hama_bloc.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/delete_sebaran_hama/delete_sebaran_hama_bloc.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/update_sebaran_hama/update_sebaran_hama_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/add_map_varietas/add_map_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/add_sebaran_varietas/add_sebaran_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/all_sebaran_varietas/all_sebaran_varietas_bloc.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/delete_sebaran_varietas/delete_sebaran_varietas_bloc.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/update_sebaran_varietas/update_sebaran_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/varietas/bloc/varietas/varietas_bloc.dart';
 
 void main() {
@@ -46,11 +50,11 @@ class MyApp extends StatelessWidget {
         title: 'GrapeGrow Apps',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.white),
-          useMaterial3: true, // Menggunakan Material Design 3
+          useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: FutureBuilder<AuthResponseModel?>( // Membangun tampilan awal berdasarkan status otentikasi
-          future: AuthLocalDatasource().getAuthData(), // Mendapatkan data otentikasi dari sumber lokal
+        home: FutureBuilder<AuthResponseModel?>(
+          future: AuthLocalDatasource().getAuthData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -87,6 +91,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AddSebaranVarietasBloc(SebaranVarietasRouteDatasource())),
         BlocProvider(create: (context) => GetAllModulBloc(ModulBudidayaRemoteDatasource())),
         BlocProvider(create: (context) => GetModulByIdBloc(ModulBudidayaRemoteDatasource())),
+        BlocProvider(create: (context) => DeleteSebaranVarietasBloc(SebaranVarietasRouteDatasource())),
+        BlocProvider(create: (context) => DeleteSebaranHamaBloc(SebaranHamaRouteDatasource())),
+        BlocProvider(create: (context) => UpdateSebaranVarietasBloc(SebaranVarietasRouteDatasource())),
+        BlocProvider(create: (context) => UpdateSebaranHamaBloc(SebaranHamaRouteDatasource())),
       ],
       child: child,
     );

@@ -42,7 +42,7 @@ class _VarietasPageState extends State<VarietasPage> {
       body: BlocBuilder<VarietasBloc, VarietasState>(
         builder: (context, state) {
           return state.maybeWhen(
-            orElse: () => const Center(child: Text("Terjadi Error")),
+            orElse: () => const Center(child: Text("Data Tidak Muncul")),
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),

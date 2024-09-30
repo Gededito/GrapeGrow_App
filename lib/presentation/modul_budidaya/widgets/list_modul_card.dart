@@ -73,7 +73,7 @@ class _ListModulCardState extends State<ListModulCard> {
                   Icon(
                     Icons.play_circle_outline,
                     size: 40,
-                    color: AppColors.black.withOpacity(0.8),
+                    color: AppColors.white.withOpacity(0.8),
                   )
                 ],
               ),

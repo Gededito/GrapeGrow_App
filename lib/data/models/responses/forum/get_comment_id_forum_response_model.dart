@@ -14,7 +14,7 @@ class GetCommentByIdForumResponse {
 
   factory GetCommentByIdForumResponse.fromMap(Map<String, dynamic> json) {
     if (!json.containsKey("commments") || json["commments"] == null) {
-      throw FormatException("Invalid JSON: Missing or null 'comments' field");
+      throw const FormatException("Invalid JSON: Missing or null 'comments' field");
     }
 
     List<CommentForum> parsedComments = [];

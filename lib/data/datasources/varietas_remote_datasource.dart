@@ -43,5 +43,4 @@ class VarietasRemoteDatasource {
       return const Left("Data Tidak Sesuai");
     }
   }
-
 }

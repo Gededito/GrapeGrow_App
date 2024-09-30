@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/data/models/responses/add_sebaran_hama_response.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/add_sebaran_hama_response.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/all_sebaran_hama/all_sebaran_hama_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/pages/add_hama_sebaran.dart';
 import 'package:location/location.dart';
@@ -176,7 +176,7 @@ class _MapSebaranHamaState extends State<MapSebaranHama> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => const AddHamaSebaran(),

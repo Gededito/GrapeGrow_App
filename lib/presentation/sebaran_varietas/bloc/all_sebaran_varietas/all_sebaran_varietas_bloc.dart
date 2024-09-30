@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grapegrow_apps/data/datasources/sebaran_varietas_route_datasource.dart';
-import 'package:grapegrow_apps/data/models/responses/list_sebaran_varietas_response.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/list_sebaran_varietas_response.dart';
 
 part 'all_sebaran_varietas_bloc.freezed.dart';
 part 'all_sebaran_varietas_event.dart';

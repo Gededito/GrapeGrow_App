@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:grapegrow_apps/data/models/responses/add_sebaran_hama_response.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/add_sebaran_hama_response.dart';
 
 class ListSebaranHamaResponse {
   final String status;

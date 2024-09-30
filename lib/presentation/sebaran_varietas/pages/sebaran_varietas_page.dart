@@ -81,7 +81,7 @@ class _SebaranVarietasPageState extends State<SebaranVarietasPage> {
              return FloatingActionButton.extended(
                heroTag: "Map Sebaran",
                onPressed: () {
-                 context.push(MapSebaranVarietas(
+                 context.pushReplacement(MapSebaranVarietas(
                    lat: data.data.latLng.latitude,
                    lon: data.data.latLng.longitude,
                  ));

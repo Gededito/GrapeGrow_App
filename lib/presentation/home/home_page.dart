@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
@@ -7,6 +8,7 @@ import 'package:grapegrow_apps/presentation/cuaca/pages/cuaca_page.dart';
 import 'package:grapegrow_apps/presentation/hama/pages/hama_page.dart';
 import 'package:grapegrow_apps/presentation/modul_budidaya/pages/modul_page.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/pages/sebaran_hama_page.dart';
+import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/add_map_varietas/add_map_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/sebaran_varietas_page.dart';
 import 'package:grapegrow_apps/presentation/varietas/pages/varietas_page.dart';
 import 'package:grapegrow_apps/widgets/category_card.dart';
@@ -23,6 +25,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final String fontPoppins = 'FontPoppins';
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AddMapVarietasBloc>().add(const AddMapVarietasEvent.getCurrentPosition());
+  }
 
   @override
   Widget build(BuildContext context) {

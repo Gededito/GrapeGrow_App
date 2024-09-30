@@ -37,7 +37,6 @@ class MapRemoteDataSource {
       late LocationData locationData;
 
       final state = await _getPermission(location);
-
       if (!state) return const Left("Permission not granted");
 
       locationData = await location.getLocation();

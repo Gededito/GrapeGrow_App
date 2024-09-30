@@ -4,7 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/core/constants/constant.dart';
-import 'package:grapegrow_apps/data/models/responses/add_sebaran_varietas_response.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/add_sebaran_varietas_response.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,7 +29,6 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
     var phoneNumber = widget.data.user!.phone;
     var message =
         "Hallo, Saya *${widget.data.user!.name}* ingin bertanya mengenai Penjualan Bibit *${widget.data.nama}*, Apakah masih tersedia ?";
-
     final url = Uri.parse("https://wa.me/$phoneNumber/?text=${Uri.parse(message)}");
 
     if (await canLaunchUrl(url)) {
@@ -79,7 +78,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
             ClipRRect(
@@ -122,7 +121,6 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
                         height: 40.0,
                       ),
                     ),
-                    const SizedBox(width: 8.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +169,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
               widget.data.nama,
               style: TextStyle(
                 fontFamily: fontPoppins,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -266,6 +264,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
           icon: const Icon(
             Icons.phone,
             color: AppColors.white,
+            size: 16,
           ),
         ),
       ),

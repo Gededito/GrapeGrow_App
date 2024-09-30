@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:dartz/dartz.dart';
 import 'package:grapegrow_apps/data/datasources/auth_local_datasource.dart';
 import 'package:grapegrow_apps/data/models/request/comment_request_model.dart';
@@ -19,16 +18,13 @@ class ForumRemoteDatasource {
   Future<Either<String, AddPostForumDiskusiResponse>> createPost(
     PostRequestModel postRequest,
   ) async {
-
     try {
       final authData = await AuthLocalDatasource().getAuthData();
-
       final uri = Uri.parse("${Variables.baseUrl}/api/post/store");
 
       final Map<String, String> headers = {
         'Authorization': 'Bearer ${authData!.accessToken}',
       };
-
       http.Response response;
 
       if (postRequest.gambar == null) {
@@ -57,18 +53,15 @@ class ForumRemoteDatasource {
       } else {
         return const Left('Failed Create Post Forum');
       }
-
     } on SocketException {
       return const Left("No Internet Connection");
     } catch (e) {
-      // print(e.toString());
       return Left("An error occurred: ${e.toString()}");
     }
   }
 
   // Get All Post Forum
   Future<Either<String, GetAllPostForumResponse>> getAllPost() async {
-
     try {
       final authData = await AuthLocalDatasource().getAuthData();
 
@@ -85,7 +78,6 @@ class ForumRemoteDatasource {
       } else {
         return const Left("Failed Get All Post");
       }
-
     } on SocketException {
       return const Left("No Internet Connection");
     } catch (e) {
@@ -98,7 +90,6 @@ class ForumRemoteDatasource {
       CommentRequestModel commentRequest,
       int id,
   ) async {
-
     try {
       final authData = await AuthLocalDatasource().getAuthData();
 
@@ -106,7 +97,6 @@ class ForumRemoteDatasource {
       var request = http.MultipartRequest('POST', uri);
 
       final fileName = commentRequest.gambar;
-
       final Map<String, String> headers = {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${authData!.accessToken}',
@@ -138,11 +128,9 @@ class ForumRemoteDatasource {
       } else {
         return const Left("Failed Create Comment Forum");
       }
-
     } on SocketException {
       return const Left("No Internet Connection");
     } catch (e) {
-      // print(e.toString());
       return Left("An error occurred: ${e.toString()}");
     }
   }
@@ -151,7 +139,6 @@ class ForumRemoteDatasource {
   Future<Either<String, GetCommentByIdForumResponse>> getCommentByIdForum(
       int id
   ) async {
-
     try {
       final authData = await AuthLocalDatasource().getAuthData();
 
@@ -168,7 +155,6 @@ class ForumRemoteDatasource {
       } else {
         return const Left("Gagal Memunculkan Comment");
       }
-
     } on SocketException {
       return const Left("No Internet Connection");
     } catch (e) {
@@ -180,7 +166,6 @@ class ForumRemoteDatasource {
   Future<Either<String, dynamic>> likeAndDislike(
       int id
   ) async {
-
     try {
       final authData = await AuthLocalDatasource().getAuthData();
       

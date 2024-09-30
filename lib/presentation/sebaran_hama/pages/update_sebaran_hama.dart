@@ -1,51 +1,57 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:grapegrow_apps/core/component/build_context_ext.dart';
 import 'package:grapegrow_apps/core/component/buttons.dart';
 import 'package:grapegrow_apps/core/component/custom_input_field.dart';
 import 'package:grapegrow_apps/core/component/description_input.dart';
-import 'package:grapegrow_apps/core/component/image_input.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
 import 'package:grapegrow_apps/data/models/maps/map_model.dart';
-import 'package:grapegrow_apps/data/models/request/sebaran_hama_request.dart';
+import 'package:grapegrow_apps/data/models/request/update_sebaran_hama.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/add_sebaran_hama_response.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/add_map_hama/add_map_hama_bloc.dart';
-import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/add_sebaran_hama/add_sebaran_hama_bloc.dart';
+import 'package:grapegrow_apps/presentation/sebaran_hama/bloc/update_sebaran_hama/update_sebaran_hama_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/pages/add_map_hama.dart';
 import 'package:grapegrow_apps/presentation/sebaran_hama/pages/sebaran_hama_page.dart';
 
-class AddHamaSebaran extends StatefulWidget {
-  const AddHamaSebaran({super.key});
+class UpdateHamaSebaran extends StatefulWidget {
+  final SebaranHama data;
+
+  const UpdateHamaSebaran({
+    super.key,
+    required this.data,
+  });
 
   @override
-  State<AddHamaSebaran> createState() => _AddHamaSebaranState();
+  State<UpdateHamaSebaran> createState() => _UpdateHamaSebaranState();
 }
 
-class _AddHamaSebaranState extends State<AddHamaSebaran> {
+class _UpdateHamaSebaranState extends State<UpdateHamaSebaran> {
   final String fontPoppins = 'FontPoppins';
 
-  final namaController = TextEditingController();
-  final gejalaController = TextEditingController();
-  final solusiController = TextEditingController();
-  final alamatController = TextEditingController();
-  MapModel? mapModel;
-  File? imageFile;
+  final _namaController = TextEditingController();
+  final _gejalaController = TextEditingController();
+  final _solusiController = TextEditingController();
+  final _alamatController = TextEditingController();
+  MapModel? _mapModel;
 
   @override
   void dispose() {
-    namaController.dispose();
-    gejalaController.dispose();
-    solusiController.dispose();
-    alamatController.dispose();
+    _namaController.dispose();
+    _gejalaController.dispose();
+    _solusiController.dispose();
+    _alamatController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    context
-        .read<AddMapHamaBloc>()
-        .add(const AddMapHamaEvent.getCurrentPosition());
+    context.read<AddMapHamaBloc>().add(const AddMapHamaEvent.getCurrentPosition());
+
+    _namaController.text = widget.data.nama;
+    _gejalaController.text = widget.data.gejala;
+    _solusiController.text = widget.data.solusi;
+    _alamatController.text = getAddressFromLatLong(widget.data.lat, widget.data.lon).toString();
     super.initState();
   }
 
@@ -54,7 +60,7 @@ class _AddHamaSebaranState extends State<AddHamaSebaran> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tambahkan Hama Di Map',
+          'Update Data Sebaran Hama',
           style: TextStyle(
             fontSize: 16,
             fontFamily: fontPoppins,
@@ -72,30 +78,23 @@ class _AddHamaSebaranState extends State<AddHamaSebaran> {
           child: Column(
             children: [
               CustomInputField(
-                label: 'Nama Jenis Penyakit Atau Hama ?',
-                controller: namaController,
+                label: "Nama Jenis Penyakit Atau Hama?",
+                controller: _namaController,
                 toggleObscureText: null,
-                labelText: 'Nama Penyakit Atau Hama',
+                labelText: "Nama Penyakit Atau Hama",
                 textInputAction: TextInputAction.next,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               DescriptionInput(
-                label: 'Cara Penyelesainnya ?',
-                controller: solusiController,
+                label: "Cara Penyelesainnya?",
+                controller: _solusiController,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               DescriptionInput(
-                label: 'Gejala Yang Dialami ?',
-                controller: gejalaController,
+                label: "Gejala Yang Dialami?",
+                controller: _gejalaController,
               ),
-              const SizedBox(height: 12),
-              ImageInput(
-                label: 'Masukan Bukti Foto',
-                onImageSelected: (File? file) {
-                  imageFile = file;
-                },
-              ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -107,30 +106,32 @@ class _AddHamaSebaranState extends State<AddHamaSebaran> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               BlocConsumer<AddMapHamaBloc, AddMapHamaState>(
                 listener: (context, state) {
                   state.maybeMap(
-                      orElse: () => alamatController.text = "Location Not Found",
-                      loaded: (data) {
-                        mapModel = data.data;
-                        alamatController.text = data.data.address;
-                      });
+                    orElse: () => _alamatController,
+                    loaded: (data) {
+                      _mapModel = data.data;
+                      _alamatController.text = data.data.address;
+                    }
+                  );
                 },
                 builder: (context, state) {
                   state.maybeMap(
-                      orElse: () {},
-                      loading: (data) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      });
+                    orElse: () {},
+                    loading: (data) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  );
                   return Row(
                     children: [
                       Expanded(
                         flex: 4,
                         child: TextField(
-                          controller: alamatController,
+                          controller: _alamatController,
                           maxLines: 2,
                           enabled: false,
                           decoration: const InputDecoration(
@@ -143,26 +144,26 @@ class _AddHamaSebaranState extends State<AddHamaSebaran> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 4.0),
                       Expanded(
                         flex: 2,
                         child: ElevatedButton(
                           onPressed: () async {
                             await context.push(AddMapHama(
-                              lat: mapModel!.latLng.latitude,
-                              lon: mapModel!.latLng.longitude,
+                              lat: _mapModel!.latLng.latitude,
+                              lon: _mapModel!.latLng.longitude,
                             ));
                             setState(() {});
                           },
-                          child: const FittedBox(child: Text('Change\nLocation')),
+                          child: const FittedBox(child: Text('Cari\nLocation')),
                         ),
                       ),
                     ],
                   );
-                },
+                }
               ),
-              const SizedBox(height: 40),
-              BlocConsumer<AddSebaranHamaBloc, AddSebaranHamaState>(
+              const SizedBox(height: 40.0),
+              BlocConsumer<UpdateSebaranHamaBloc, UpdateSebaranHamaState>(
                 listener: (context, state) {
                   state.maybeWhen(
                     orElse: () {},
@@ -170,9 +171,9 @@ class _AddHamaSebaranState extends State<AddHamaSebaran> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            "Menambahkan Sebaran Hama Berhasil",
+                            "Update Sebaran Hama Berhasil",
                             style: TextStyle(
-                              color: AppColors.white,
+                              color: AppColors.white
                             ),
                           ),
                           backgroundColor: AppColors.primary,
@@ -185,7 +186,7 @@ class _AddHamaSebaranState extends State<AddHamaSebaran> {
                         SnackBar(
                           content: Text(message),
                           backgroundColor: Colors.redAccent,
-                        )
+                        ),
                       );
                     }
                   );
@@ -195,39 +196,51 @@ class _AddHamaSebaranState extends State<AddHamaSebaran> {
                     orElse: () {
                       return Button.filled(
                         onPressed: () {
-                          final addHamaRequest = SebaranHamaRequest(
-                            nama: namaController.text,
-                            gejala: gejalaController.text,
-                            solusi: solusiController.text,
-                            lat: mapModel!.latLng.latitude,
-                            lon: mapModel!.latLng.longitude,
-                            gambar: imageFile!,
+                          final updateHamaRequest = UpdateSebaranHama(
+                            nama: _namaController.text,
+                            solusi: _solusiController.text,
+                            gejala: _gejalaController.text,
+                            lat: _mapModel!.latLng.latitude,
+                            lon: _mapModel!.latLng.longitude,
                           );
 
                           context
-                            .read<AddSebaranHamaBloc>()
-                            .add(AddSebaranHamaEvent.addSebaran(addHamaRequest));
+                              .read<UpdateSebaranHamaBloc>()
+                              .add(UpdateSebaranHamaEvent.updateSebaranHama(updateHamaRequest, widget.data.id));
                         },
-                        label: "Tambahkan",
+                        label: "Update",
                       );
                     },
-                    loading: () => const Center(
-                      child: CircularProgressIndicator(),
-                    )
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(),
+                      )
                   );
-                },
+                }
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 12.0),
               Button.outlined(
                 onPressed: () {
                   context.pushReplacement(const SebaranHamaPage());
                 },
-                label: 'Batalkan',
+                label: "Batalkan",
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> getAddressFromLatLong(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        String address = '${placemark.street}, ${placemark.subLocality}, ${placemark.postalCode}, ${placemark.country}';
+        _alamatController.text = address;
+      }
+    } catch (e) {
+      print('Error getting address: $e');
+    }
   }
 }

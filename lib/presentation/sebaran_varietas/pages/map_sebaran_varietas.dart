@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grapegrow_apps/core/constants/colors.dart';
-import 'package:grapegrow_apps/data/models/responses/add_sebaran_varietas_response.dart';
+import 'package:grapegrow_apps/data/models/responses/sebaran/add_sebaran_varietas_response.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/bloc/all_sebaran_varietas/all_sebaran_varietas_bloc.dart';
 import 'package:grapegrow_apps/presentation/sebaran_varietas/pages/add_varietas_sebaran.dart';
 import 'package:location/location.dart';

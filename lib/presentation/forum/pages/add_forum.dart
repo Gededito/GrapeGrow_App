@@ -84,7 +84,7 @@ class _AddForumState extends State<AddForum> {
                           backgroundColor: AppColors.primary,
                         ),
                       );
-                      context.pop();
+                      context.pushReplacement(const ForumPage());
                     },
                     error: (message) {
                       ScaffoldMessenger.of(context).showSnackBar(

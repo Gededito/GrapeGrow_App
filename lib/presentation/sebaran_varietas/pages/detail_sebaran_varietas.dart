@@ -78,7 +78,7 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: ListView(
           children: [
             ClipRRect(
@@ -111,16 +111,6 @@ class _DetailSebaranVarietasState extends State<DetailSebaranVarietas> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(50.0),
-                      ),
-                      child: Image.network(
-                        'https://i.pravatar.cc/200',
-                        width: 40.0,
-                        height: 40.0,
-                      ),
-                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -23,7 +23,6 @@ class _DetailSebaranHamaState extends State<DetailSebaranHama> {
   final String fontPoppins = 'FontPoppins';
   String alamat = "";
 
-  // Fungsi Membaca Alamat Pengguna Dari Lat dan Lon Pada Database
   Future<void> _getAddress() async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(widget.data.lat, widget.data.lon);
@@ -96,17 +95,6 @@ class _DetailSebaranHamaState extends State<DetailSebaranHama> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(50.0),
-                      ),
-                      child: Image.network(
-                        'https://i.pravatar.cc/200',
-                        width: 40.0,
-                        height: 40.0,
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
